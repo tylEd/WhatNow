@@ -1,5 +1,5 @@
 //
-//  ListVC.swift
+//  TasksVC.swift
 //  WhatNow
 //
 //  Created by Tyler Edwards on 1/7/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ListVC: UITableViewController {
+class TasksVC: UITableViewController {
     
     var list: List!
 

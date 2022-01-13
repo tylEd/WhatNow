@@ -20,15 +20,11 @@ class Model {
         ]
         
         for list in self.lists {
-            list.tasks = [
-                Task(name: "1"),
-                Task(name: "2"),
-                Task(name: "3"),
-                Task(name: "4"),
-            ]
-            
-            let randIndex = Int.random(in: 0 ..< list.tasks.count)
-            list.tasks[randIndex].isCompleted.toggle()
+            for i in 0..<Int.random(in: 3...6) {
+                let task = Task(name: "\(i)")
+                task.isCompleted = Bool.random()
+                list.tasks.append(task)
+            }
         }
     }
     

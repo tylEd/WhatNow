@@ -1,13 +1,14 @@
 //
-//  ViewController.swift
+//  ListsVC.swift
 //  WhatNow
 //
 //  Created by Tyler Edwards on 1/7/22.
 //
 
 import UIKit
+import CoreData
 
-class ViewController: UITableViewController {
+class ListsVC: UITableViewController {
     
     var model = Model()
 
@@ -16,24 +17,19 @@ class ViewController: UITableViewController {
         
         model.loadTestDate()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addArea))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
     }
     
-    @objc func addArea() {
-        let ac = UIAlertController(title: "New Area", message: nil, preferredStyle: .alert)
-        ac.addTextField()
+    @objc func addList() {
+        guard let nav = storyboard?.instantiateViewController(withIdentifier: "ListFormVC") as? UINavigationController,
+              let listForm = nav.viewControllers[0] as? ListFormVC
+        else {
+            fatalError("Failed to instantiate ListFormVC")
+        }
         
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        ac.addAction(UIAlertAction(title: "Add", style: .default, handler: { /*[weak self]*/ _ in
-            if let name = ac.textFields?[0].text {
-                self.model.lists.append(List(name: name, color: .green))
-                DispatchQueue.main.async {
-                    self.tableView.insertRows(at: [IndexPath(row: self.model.lists.count - 1, section: 0)], with: .right)
-                }
-            }
-        }))
-        
-        present(ac, animated: true)
+        listForm.delegate = self
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -52,7 +48,7 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "ListVC") as? ListVC {
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "TasksVC") as? TasksVC {
             vc.list = model.lists[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -60,3 +56,11 @@ class ViewController: UITableViewController {
 
 }
 
+extension ListsVC: ListFormVCDelegate {
+    
+    func didTapDone(list: List) {
+        model.lists.append(list)
+        tableView.insertRows(at: [IndexPath(row: model.lists.count - 1, section: 0)], with: .right)
+    }
+    
+}
