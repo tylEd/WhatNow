@@ -17,7 +17,22 @@ class ListsVC: UITableViewController {
         
         model.loadTestDate()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
+        
+        // Toolbar
+        var addTaskConfig = UIButton.Configuration.plain()
+        addTaskConfig.image = UIImage(systemName: "plus.circle.fill")
+        addTaskConfig.imagePadding = 8
+        addTaskConfig.contentInsets = .init(top: 5, leading: 0, bottom: 5, trailing: 5)
+        let addTaskButton = UIButton(configuration: addTaskConfig, primaryAction: nil)
+        addTaskButton.addTarget(self, action: #selector(addTask), for: .touchUpInside)
+        addTaskButton.setTitle("New Task", for: .normal)
+        let addTask = UIBarButtonItem(customView: addTaskButton)
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let addList = UIBarButtonItem(title: "Add List", style: .plain, target: self, action: #selector(addList))
+        toolbarItems = [addTask, spacer, addList]
+        navigationController?.isToolbarHidden = false
     }
     
     @objc func addList() {
@@ -30,6 +45,10 @@ class ListsVC: UITableViewController {
         listForm.delegate = self
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
+    }
+    
+    @objc func addTask() {
+        print("TODO: Add task sheet")
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
