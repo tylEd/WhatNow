@@ -46,7 +46,7 @@ class TasksVC: UITableViewController {
         }
         let task = list.tasks[indexPath.row]
         
-        cell.toggle.imageView?.image = UIImage(systemName: task.isCompleted ? "circle.inset.filled" : "circle")
+        cell.toggle.imageView?.image = task.status.imageForStatus()
         cell.title.text = task.name
         
         return cell
@@ -56,10 +56,25 @@ class TasksVC: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let task = list.tasks[indexPath.row]
-        task.isCompleted.toggle()
+        task.status.next()
         if let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
-            cell.toggle.imageView?.image = UIImage(systemName: task.isCompleted ? "circle.inset.filled" : "circle")
+            cell.toggle.imageView?.image = task.status.imageForStatus()
         }
     }
 
+}
+
+fileprivate extension Task.Status {
+    func imageForStatus() -> UIImage? {
+        switch self {
+        case .Scheduled:
+            //return UIImage(systemName: "circle")
+            return UIImage(systemName: "circle.dotted")
+        case .InProgress:
+            //return UIImage(systemName: "circle.lefthalf.filled")
+            return UIImage(systemName: "circle")
+        case .Completed:
+            return UIImage(systemName: "circle.fill")
+        }
+    }
 }
