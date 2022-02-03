@@ -8,13 +8,21 @@
 import UIKit
 import CoreData
 import Combine
+import RealmSwift
 
 class ListsVC: UITableViewController {
     
     var model = Model()
+    var notificationToken: NotificationToken!
+    
+    deinit {
+        notificationToken.invalidate()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupModelObserver()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
         
@@ -34,6 +42,33 @@ class ListsVC: UITableViewController {
         navigationController?.isToolbarHidden = false
     }
     
+    func setupModelObserver() {
+        notificationToken = model.lists.observe { [weak self] (changes) in
+            guard let tableView = self?.tableView else { return }
+            switch changes {
+            case .initial:
+                // Results are now populated and can be accessed without blocking the UI
+                tableView.reloadData()
+            case .update(_, let deletions, let insertions, let modifications):
+                // Query results have changed, so apply them to the UITableView.
+                tableView.performBatchUpdates({
+                    // It's important to be sure to always update a table in this order:
+                    // deletions, insertions, then updates. Otherwise, you could be unintentionally
+                    // updating at the wrong index!
+                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                })
+            case .error(let error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
+            }
+        }
+    }
+    
     @objc func addList() {
         guard let nav = storyboard?.instantiateViewController(withIdentifier: "ListEditVC") as? UINavigationController,
               let listForm = nav.viewControllers[0] as? ListEditVC
@@ -50,16 +85,22 @@ class ListsVC: UITableViewController {
         print("TODO: Add task sheet")
     }
     
+}
+
+//MARK: Data Source
+
+extension ListsVC {
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model.lists.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
-        let area = model.lists[indexPath.row]
+        let list = model.lists[indexPath.row]
         
         var content = cell.defaultContentConfiguration()
-        content.text = area.name
+        content.text = list.name + " \(list.tasks.count)"
         cell.contentConfiguration = content
         
         return cell
@@ -71,16 +112,20 @@ class ListsVC: UITableViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
     }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        
+        let list = model.lists[indexPath.row]
+        model.deleteList(id: list.id)
+    }
 
 }
 
 extension ListsVC: ListEditVCDelegate {
     
     func didTapDone(list: TaskList) {
-//        model.lists.append(list)
-//        tableView.insertRows(at: [IndexPath(row: model.lists.count - 1, section: 0)], with: .right)
         model.addList(name: list.name)
-        tableView.reloadData()
     }
     
 }

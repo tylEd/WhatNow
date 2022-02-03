@@ -10,7 +10,7 @@ import RealmSwift
 
 class Model {
     private(set) var localRealm: Realm!
-    var lists: [TaskList] = []
+    var lists: Results<TaskList>!
     
     init() {
         openRealm()
@@ -30,12 +30,7 @@ class Model {
     }
     
     func fetchLists() {
-        let allLists = localRealm.objects(TaskList.self)
-        
-        lists = []
-        allLists.forEach { list in
-            lists.append(list)
-        }
+        lists = localRealm.objects(TaskList.self)
     }
     
     func addList(name: String) {
@@ -48,7 +43,36 @@ class Model {
         } catch {
             print("ERROR: Failed to add \(name) list to Realm")
         }
-        
+    }
+    
+    func updateList(id: ObjectId, name: String) {
+        do {
+            let list = localRealm.object(ofType: TaskList.self, forPrimaryKey: id)
+            guard let list = list else { return }
+            
+            try localRealm.write {
+                list.name = name
+                fetchLists()
+                print("Updated task with id \(id)! name: \(name)")
+            }
+        } catch {
+            print("Error updating task \(id) to Realm: \(error)")
+        }
+    }
+    
+    func deleteList(id: ObjectId) {
+        do {
+            let list = localRealm.object(ofType: TaskList.self, forPrimaryKey: id)
+            guard let list = list else { return }
+            
+            try localRealm.write {
+                localRealm.delete(list)
+                fetchLists()
+                print("Deleted task with id \(id)")
+            }
+        } catch {
+            print("Error deleting task \(id) to Realm: \(error)")
+        }
     }
 }
 
@@ -56,7 +80,17 @@ class TaskList: Object, ObjectKeyIdentifiable {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var name: String
     @Persisted var color: Color = .Blue
-    @Persisted var tasks: List<Task>
+    @Persisted private(set) var tasks: List<Task> //TODO: private doesn't seem to work here.
+    
+    func add(task: Task) {
+        if let realm = realm {
+            try? realm.write {
+                tasks.append(task)
+            }
+        } else {
+            tasks.append(task)
+        }
+    }
 }
 
 extension TaskList {
@@ -81,6 +115,16 @@ class Task: Object {
     @Persisted var name: String
     @Persisted var status: Status = .Scheduled
     //@Persisted var subtasks: List<Subtask>
+    
+    func tickStatus() {
+        if let realm = realm {
+            try? realm.write {
+                status = status.next()
+            }
+        } else {
+            status = status.next()
+        }
+    }
 }
 
 extension Task {

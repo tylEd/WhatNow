@@ -7,18 +7,14 @@
 
 import UIKit
 
-protocol TaskCellDelegate {
-    func didTapToggle()
-}
-
 class TaskCell: UITableViewCell {
     
-    var delegate: TaskCellDelegate?
+    var didTapToggle: (() -> Void)?
     
     @IBOutlet weak var toggle: UIButton!
     @IBOutlet weak var title: UILabel!
 
     @IBAction func didTapToggle(_ sender: UIButton) {
-        delegate?.didTapToggle()
+        didTapToggle?()
     }
 }

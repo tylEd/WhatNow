@@ -6,16 +6,47 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TasksVC: UITableViewController {
     
     var list: TaskList!
+    var notificationToken: NotificationToken!
+    
+    deinit {
+        notificationToken.invalidate()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = list.name
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTask))
+        
+        notificationToken = list.tasks.observe { [weak self] (changes) in
+            guard let tableView = self?.tableView else { return }
+            switch changes {
+            case .initial:
+                // Results are now populated and can be accessed without blocking the UI
+                tableView.reloadData()
+            case .update(_, let deletions, let insertions, let modifications):
+                // Query results have changed, so apply them to the UITableView.
+                tableView.performBatchUpdates({
+                    // It's important to be sure to always update a table in this order:
+                    // deletions, insertions, then updates. Otherwise, you could be unintentionally
+                    // updating at the wrong index!
+                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                })
+            case .error(let error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
+            }
+        }
     }
     
     @objc func addTask() {
@@ -25,16 +56,18 @@ class TasksVC: UITableViewController {
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         ac.addAction(UIAlertAction(title: "Add", style: .default, handler: { /*[weak self]*/ _ in
             if let name = ac.textFields?[0].text {
-                //TODO: This crashes
-                self.list.tasks.append(Task(value: ["name": name]))
-                DispatchQueue.main.async {
-                    self.tableView.insertRows(at: [IndexPath(row: self.list.tasks.count - 1, section: 0)], with: .right)
-                }
+                self.list.add(task: Task(value: ["name": name]))
             }
         }))
         
         present(ac, animated: true)
     }
+    
+}
+
+//MARK: Data Source
+    
+extension TasksVC {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.tasks.count
@@ -47,8 +80,9 @@ class TasksVC: UITableViewController {
         }
         let task = list.tasks[indexPath.row]
         
-        cell.toggle.imageView?.image = task.status.imageForStatus()
+        cell.toggle.setImage(task.status.imageForStatus(), for: .normal)
         cell.title.text = task.name
+        cell.didTapToggle = {} //TODO: ?
         
         return cell
     }
@@ -57,9 +91,21 @@ class TasksVC: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let task = list.tasks[indexPath.row]
-        task.status = task.status.next()
+        task.tickStatus()
         if let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
-            cell.toggle.imageView?.image = task.status.imageForStatus()
+            cell.toggle.setImage(task.status.imageForStatus(), for: .normal)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        
+        if let realm = list.realm {
+            try? realm.write {
+                list.tasks.remove(at: indexPath.row)
+            }
+        } else {
+            list.tasks.remove(at: indexPath.row)
         }
     }
 
