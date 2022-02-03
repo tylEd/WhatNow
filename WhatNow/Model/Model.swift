@@ -6,106 +6,132 @@
 //
 
 import Foundation
-import UIKit
-import CoreLocation
+import RealmSwift
 
 class Model {
+    private(set) var localRealm: Realm!
+    var lists: [TaskList] = []
     
-    var lists: [List] = []
+    init() {
+        openRealm()
+        fetchLists()
+    }
     
-    func loadTestDate() {
-        self.lists = [
-            List(name: "A", color: .blue),
-            List(name: "B", color: .green),
-            List(name: "C", color: .yellow),
-        ]
-        
-        for list in self.lists {
-            for i in 0..<Int.random(in: 3...6) {
-                let task = Task(name: "\(i)")
-                task.status = .init(rawValue: i % 3) ?? .Scheduled
-                list.tasks.append(task)
-            }
+    func openRealm() {
+        do {
+            var config = Realm.Configuration(schemaVersion: 1)
+            config.deleteRealmIfMigrationNeeded = true //TODO: *
+            Realm.Configuration.defaultConfiguration = config
+            localRealm = try Realm()
+        } catch {
+            //TODO: *
+            fatalError("Couldn't open Realm")
         }
     }
     
-}
-
-class List {
-    
-    var name: String
-    var color: UIColor
-    var tasks: [Task]
-    
-    init(name: String, color: UIColor) {
-        self.name = name
-        self.color = color
-        self.tasks = []
+    func fetchLists() {
+        let allLists = localRealm.objects(TaskList.self)
+        
+        lists = []
+        allLists.forEach { list in
+            lists.append(list)
+        }
     }
     
+    func addList(name: String) {
+        do {
+            try localRealm.write {
+                let newList = TaskList(value: ["name": name])
+                localRealm.add(newList)
+                fetchLists()
+            }
+        } catch {
+            print("ERROR: Failed to add \(name) list to Realm")
+        }
+        
+    }
 }
 
-class Task {
-    
-    enum Status: Int, CaseIterable {
+class TaskList: Object, ObjectKeyIdentifiable {
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var name: String
+    @Persisted var color: Color = .Blue
+    @Persisted var tasks: List<Task>
+}
+
+extension TaskList {
+    enum Color: Int, PersistableEnum, CaseIterable {
+        case Red
+        case Orange
+        case Yellow
+        case Green
+        case Mint
+        case Teal
+        case Cyan
+        case Blue
+        case Indigo
+        case Purple
+        case Pink
+        case Brown
+        case Gray
+    }
+}
+
+class Task: Object {
+    @Persisted var name: String
+    @Persisted var status: Status = .Scheduled
+    //@Persisted var subtasks: List<Subtask>
+}
+
+extension Task {
+    enum Status: Int, PersistableEnum {
         case Scheduled
         case InProgress
         case Completed
         
-        mutating func next() {
+        func next() -> Status {
             let nextStatus = Status(rawValue: self.rawValue + 1) ?? .Scheduled
-            self = nextStatus
+            return nextStatus
         }
     }
-    
-    var name: String
-    var status: Status
-    var subtasks: [Subtask]
-    
-    init(name: String) {
-        self.name = name
-        self.status = .Scheduled
-        self.subtasks = []
-    }
-    
 }
 
-class Subtask {
-    var name: String
-    var isCompleted: Bool = false
+class Subtask: Object {
+    @Persisted var name: String
+    @Persisted var isCompleted: Bool = false
     
-    init (name: String) {
+    convenience init(name: String) {
+        self.init()
         self.name = name
     }
 }
 
-class Schedule {
-    var timeBlocks: [TimeBlock]
-    
-    init() {
-        self.timeBlocks = [
-            TimeBlock(name: "Work", days: [1, 2, 3, 4, 5]),
-            TimeBlock(name: "Sunday Fun Day", days: [1])
-        ]
-    }
-    
-}
 
+//TODO: Add schedules back in after figuring out Tasks
 class TimeBlock {
-    var listIDs: [UUID] = []
-    var name: String
-    var days: Set<Int> = []
-    var startTime: DateComponents = .init(hour: 8, minute: 0)
-    var endTime: DateComponents = .init(hour: 12 + 4, minute: 0)
+    struct Time {
+        var hour: Int
+        var minute: Int
+    }
     
-    init(name: String, days: Set<Int>? = nil) {
-        self.name = name
-        if let days = days {
-            self.days = days
-        }
+    var isActive: Bool = true
+    //var name: String
+    var days: Set<Int> = []
+    var startTime: Time
+    var endTime: Time
+    
+    private static var eightAM = Time(hour: 8, minute: 0)
+    private static var fourPM = Time(hour: 4 + 12, minute: 0)
+    
+    init(days: Set<Int>? = nil, startTime: Time = eightAM, endTime: Time = fourPM) {
+        //self.name = name
+        self.days = days ?? []
+        self.startTime = startTime
+        self.endTime = endTime
     }
     
     func testBlock() -> Bool{
+        /*
         guard let startHour = startTime.hour,
               let startMinute = startTime.minute,
               let endHour = endTime.hour,
@@ -113,14 +139,15 @@ class TimeBlock {
         else {
             return false
         }
+         */
         
         let cal = Locale.current.calendar
         let now = Date()
         
         let weekday = cal.component(.weekday, from: now)
         if days.contains(weekday),
-           let start = cal.date(bySettingHour: startHour, minute: startMinute, second: 0, of: now),
-           let end = cal.date(bySettingHour: endHour, minute: endMinute, second: 0, of: now),
+           let start = cal.date(bySettingHour: startTime.hour, minute: startTime.minute, second: 0, of: now),
+           let end = cal.date(bySettingHour: endTime.hour, minute: endTime.minute, second: 0, of: now),
            start < now && now < end
         {
             return true
@@ -130,6 +157,7 @@ class TimeBlock {
     }
     
     var timeRangeText: String {
+        /*
         guard let startHour = startTime.hour,
               let startMinute = startTime.minute,
               let endHour = endTime.hour,
@@ -137,8 +165,9 @@ class TimeBlock {
         else {
             return "Add a time"
         }
+        */
         
-        return "\(startHour):\(startMinute) - \(endHour):\(endMinute)"
+        return "\(startTime.hour):\(startTime.minute) - \(endTime.hour):\(endTime.minute)"
     }
     
     func usefulCalendarProperties() {
@@ -154,7 +183,4 @@ class TimeBlock {
         
         fatalError("Not intended to be called. Delete this after figuring out how schedule should work.")
     }
-    
 }
-
-

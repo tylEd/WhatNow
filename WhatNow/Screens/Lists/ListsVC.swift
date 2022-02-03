@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import Combine
 
 class ListsVC: UITableViewController {
     
@@ -14,8 +15,6 @@ class ListsVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        model.loadTestDate()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
         
@@ -36,8 +35,8 @@ class ListsVC: UITableViewController {
     }
     
     @objc func addList() {
-        guard let nav = storyboard?.instantiateViewController(withIdentifier: "ListFormVC") as? UINavigationController,
-              let listForm = nav.viewControllers[0] as? ListFormVC
+        guard let nav = storyboard?.instantiateViewController(withIdentifier: "ListEditVC") as? UINavigationController,
+              let listForm = nav.viewControllers[0] as? ListEditVC
         else {
             fatalError("Failed to instantiate ListFormVC")
         }
@@ -75,11 +74,13 @@ class ListsVC: UITableViewController {
 
 }
 
-extension ListsVC: ListFormVCDelegate {
+extension ListsVC: ListEditVCDelegate {
     
-    func didTapDone(list: List) {
-        model.lists.append(list)
-        tableView.insertRows(at: [IndexPath(row: model.lists.count - 1, section: 0)], with: .right)
+    func didTapDone(list: TaskList) {
+//        model.lists.append(list)
+//        tableView.insertRows(at: [IndexPath(row: model.lists.count - 1, section: 0)], with: .right)
+        model.addList(name: list.name)
+        tableView.reloadData()
     }
     
 }
