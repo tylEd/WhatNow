@@ -13,7 +13,7 @@
         <!--Lists-->
         <scene sceneID="dPE-dO-Nmq">
             <objects>
-                <tableViewController id="Ome-dW-T8W" customClass="ListsVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Ome-dW-T8W" customClass="ListsTableVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="XXl-nm-ial">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -41,7 +41,9 @@
                             <outlet property="delegate" destination="Ome-dW-T8W" id="r4m-hg-eLL"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Lists" id="HHv-Y3-kSa"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="maK-ly-bXL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -207,6 +209,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jMU-ES-R15">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="Ome-dW-T8W" kind="relationship" relationship="rootViewController" id="f6A-ZG-nNH"/>
                     </connections>
