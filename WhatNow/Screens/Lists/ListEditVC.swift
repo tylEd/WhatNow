@@ -11,12 +11,27 @@ protocol ListEditVCDelegate {
     func didTapDone(list: TaskList)
 }
 
-class ListEditVC: UIViewController {
+class ListEditVC: UITableViewController {
+    
+    enum ListEditSection: Int, CaseIterable {
+        case title
+        case color
+        case icon
+        
+        func cellIdentifier() -> String {
+            switch self {
+            case .title:
+                return "TitleCell"
+            case .color:
+                return "ColorSelectCell"
+            case .icon:
+                return "IconSelectCell"
+            }
+        }
+    }
     
     var list = TaskList(value: ["name": ""])
     var delegate: ListEditVCDelegate?
-    
-    @IBOutlet weak var titleField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,98 +45,52 @@ class ListEditVC: UIViewController {
     }
     
     @objc func doneTapped() {
-        if let title = titleField.text,
-           title != ""
-        {
-            list.name = title
-            delegate?.didTapDone(list: list)
-            dismiss(animated: true)
-        }
+//        if let title = titleField.text,
+//           title != ""
+//        {
+//            list.name = title
+//            delegate?.didTapDone(list: list)
+//            dismiss(animated: true)
+//        }
     }
     
 }
 
-extension ListEditVC: UICollectionViewDelegate, UICollectionViewDataSource {
+//MARK: TableView Delegate and DataSource
+
+extension ListEditVC {
     
-    func uiColor(for listColor: TaskList.Color) -> UIColor {
-        switch listColor {
-        case .Red:
-            return .systemRed
-        case .Orange:
-            return .systemOrange
-        case .Yellow:
-            return .systemYellow
-        case .Green:
-            return .systemGreen
-        case .Mint:
-            return .systemMint
-        case .Teal:
-            return .systemTeal
-        case .Cyan:
-            return .systemCyan
-        case .Blue:
-            return .systemBlue
-        case .Indigo:
-            return .systemIndigo
-        case .Purple:
-            return .systemPurple
-        case .Pink:
-            return .systemPink
-        case .Brown:
-            return .systemBrown
-        case .Gray:
-            return .systemGray
-        }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return ListEditSection.allCases.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return TaskList.Color.allCases.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let listColor = TaskList.Color(rawValue: indexPath.row)! //TODO: !
-        let cellID = listColor == list.color ? "SelectedColorCell" : "ColorCell"
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
-        cell.contentView.backgroundColor = uiColor(for: listColor)
-        cell.contentView.layer.cornerRadius = cell.contentView.bounds.height / 2
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let prevIndexPath = IndexPath(item: list.color.rawValue,
-                                      section: 0)
-
-        list.color = TaskList.Color(rawValue: indexPath.item)! //TODO: !
-
-        collectionView.reloadItems(at: [prevIndexPath, indexPath])
-    }
-    
-}
-
-//MARK: Static Lists
-
-
-let SYMBOLS: [String] = [
-    "list.bullet",
-    "bookmark",
-    "star.fill",
-    "wallet",
-]
-
-
-extension ListEditVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TimeBlockCell", for: indexPath) as? TimeBlockCell
-        else { fatalError("Couldn't dequeue TimeBlockCell") }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let section = ListEditSection(rawValue: indexPath.section) else {
+            fatalError("Section index out of range")
+        }
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: section.cellIdentifier(), for: indexPath)
+        if let cell = cell as? ColorSelectCell {
+            //cell.frame = tableView.bounds;
+            //cell.collectionView.reloadData()
+            //cell.layoutIfNeeded()
+            //TODO: Probably not necessary here, since the content is static, but other layouts might need to
+            //      be able to call this everytime the collection data reloads or the size changes.
+            cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
+        }
+        if let cell = cell as? IconSelectCell {
+            //cell.frame = tableView.bounds;
+            //cell.collectionView.reloadData()
+            //cell.layoutIfNeeded()
+            //TODO: Probably not necessary here, since the content is static, but other layouts might need to
+            //      be able to call this everytime the collection data reloads or the size changes.
+            cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
+        }
         return cell
     }
-    
     
 }

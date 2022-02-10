@@ -7,6 +7,8 @@
 
 import Foundation
 import RealmSwift
+//TODO: Shouldn't be here after removing UIColor for List Color
+import UIKit
 
 class Model {
     private(set) var localRealm: Realm!
@@ -111,6 +113,48 @@ extension TaskList {
     }
 }
 
+extension TaskList {
+    enum Icon: String, PersistableEnum, CaseIterable {
+        case BulletList = "list.bullet"
+        case Bookmark = "bookmark"
+        case Star = "star.fill"
+        case Book = "book"
+    }
+}
+
+//TODO: Where should this go?
+func uiColor(for listColor: TaskList.Color) -> UIColor {
+    switch listColor {
+    case .Red:
+        return .systemRed
+    case .Orange:
+        return .systemOrange
+    case .Yellow:
+        return .systemYellow
+    case .Green:
+        return .systemGreen
+    case .Mint:
+        return .systemMint
+    case .Teal:
+        return .systemTeal
+    case .Cyan:
+        return .systemCyan
+    case .Blue:
+        return .systemBlue
+    case .Indigo:
+        return .systemIndigo
+    case .Purple:
+        return .systemPurple
+    case .Pink:
+        return .systemPink
+    case .Brown:
+        return .systemBrown
+    case .Gray:
+        return .systemGray
+    }
+}
+
+
 class Task: Object {
     @Persisted var name: String
     @Persisted var status: Status = .Scheduled
@@ -176,13 +220,13 @@ class TimeBlock {
     
     func testBlock() -> Bool{
         /*
-        guard let startHour = startTime.hour,
-              let startMinute = startTime.minute,
-              let endHour = endTime.hour,
-              let endMinute = endTime.minute
-        else {
-            return false
-        }
+         guard let startHour = startTime.hour,
+         let startMinute = startTime.minute,
+         let endHour = endTime.hour,
+         let endMinute = endTime.minute
+         else {
+         return false
+         }
          */
         
         let cal = Locale.current.calendar
@@ -202,14 +246,14 @@ class TimeBlock {
     
     var timeRangeText: String {
         /*
-        guard let startHour = startTime.hour,
-              let startMinute = startTime.minute,
-              let endHour = endTime.hour,
-              let endMinute = endTime.minute
-        else {
-            return "Add a time"
-        }
-        */
+         guard let startHour = startTime.hour,
+         let startMinute = startTime.minute,
+         let endHour = endTime.hour,
+         let endMinute = endTime.minute
+         else {
+         return "Add a time"
+         }
+         */
         
         return "\(startTime.hour):\(startTime.minute) - \(endTime.hour):\(endTime.minute)"
     }

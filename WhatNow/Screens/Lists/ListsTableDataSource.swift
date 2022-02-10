@@ -118,17 +118,24 @@ extension ListsTableDataSource {
 
 extension ListsTableDataSource: UITableViewDataSource {
     
+    //TODO: Could I store ID's on the Cell classes themselves
+    static let listTitleCellID = "ListTitleCell"
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return taskLists.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
-        let list = taskLists[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Self.listTitleCellID, for: indexPath) as? ListTitleCell
+        else {
+            fatalError("Couldn't dequeue \(Self.listTitleCellID)")
+        }
         
-        var content = cell.defaultContentConfiguration()
-        content.text = list.name + " \(list.tasks.count)"
-        cell.contentConfiguration = content
+        let list = taskLists[indexPath.row]
+        cell.configure(title: list.name,
+                       taskCount: list.tasks.count,
+                       color: uiColor(for: list.color))
+        
         
         return cell
     }
