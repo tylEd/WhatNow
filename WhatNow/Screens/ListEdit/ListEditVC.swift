@@ -30,8 +30,13 @@ class ListEditVC: UITableViewController {
         }
     }
     
-    var list = TaskList(value: ["name": ""])
+    private var editList = TaskList(value: ["name": ""])
     var delegate: ListEditVCDelegate?
+    
+    func setList(_ list: TaskList) {
+        editList = TaskList(value: list)
+        editList.id = list.id //NOTE: id needed for updates. Not copied by default.
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,13 +50,10 @@ class ListEditVC: UITableViewController {
     }
     
     @objc func doneTapped() {
-//        if let title = titleField.text,
-//           title != ""
-//        {
-//            list.name = title
-//            delegate?.didTapDone(list: list)
-//            dismiss(animated: true)
-//        }
+        if editList.name != "" {
+            delegate?.didTapDone(list: editList)
+            dismiss(animated: true)
+        }
     }
     
 }
@@ -74,6 +76,13 @@ extension ListEditVC {
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: section.cellIdentifier(), for: indexPath)
+        if let cell = cell as? TitlePreviewCell {
+            cell.configure(color: uiColor(for: editList.color), imageSystemName: editList.icon.rawValue, name: editList.name)
+            cell.didChangeName = { [unowned self] newName in
+                self.editList.name = newName
+            }
+        }
+        
         if let cell = cell as? ColorSelectCell {
             //cell.frame = tableView.bounds;
             //cell.collectionView.reloadData()
@@ -81,15 +90,24 @@ extension ListEditVC {
             //TODO: Probably not necessary here, since the content is static, but other layouts might need to
             //      be able to call this everytime the collection data reloads or the size changes.
             cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
+            
+            cell.selectedColorIndex = editList.color.rawValue
+            cell.didChangeColor = { [unowned self] color in
+                self.editList.setColor(color)
+                tableView.reloadSections([ListEditSection.title.rawValue], with: .none)
+            }
         }
+        
         if let cell = cell as? IconSelectCell {
-            //cell.frame = tableView.bounds;
-            //cell.collectionView.reloadData()
-            //cell.layoutIfNeeded()
-            //TODO: Probably not necessary here, since the content is static, but other layouts might need to
-            //      be able to call this everytime the collection data reloads or the size changes.
             cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
+            
+            cell.selectedIconIndex = TaskList.Icon.allCases.firstIndex(of: editList.icon)! //TODO: !
+            cell.didChangeIcon = { [unowned self] icon in
+                self.editList.setIcon(icon)
+                tableView.reloadSections([ListEditSection.title.rawValue], with: .none)
+            }
         }
+        
         return cell
     }
     

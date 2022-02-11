@@ -29,6 +29,7 @@ class ListsTableDataSource: NSObject {
             //TODO: Or should the realm be passed in?
             var config = config
             config.schemaVersion = 2
+            config.deleteRealmIfMigrationNeeded = true //TODO: *
             self.realm = try Realm(configuration: config)
         } catch {
             fatalError("Couldn't open realm: \(error.localizedDescription)")
@@ -71,27 +72,14 @@ class ListsTableDataSource: NSObject {
 
 extension ListsTableDataSource {
     
-    func add(_ newList: TaskList) {
+    func addOrUpdate(_ list: TaskList) {
         do {
             try realm.write {
-                realm.add(newList)
+                //TODO: Should this add use update here or should I use a different method? 
+                realm.add(list, update: .modified)
             }
         } catch {
-            print("ERROR: Failed to add \(newList.name) list to Realm")
-        }
-    }
-    
-    func updateList(id: ObjectId, name: String) {
-        do {
-            let list = realm.object(ofType: TaskList.self, forPrimaryKey: id)
-            guard let list = list else { return }
-            
-            try realm.write {
-                list.name = name
-                print("Updated task with id \(id)! name: \(name)")
-            }
-        } catch {
-            print("Error updating task \(id) to Realm: \(error)")
+            print("ERROR: Failed to add \(list.name) list to Realm")
         }
     }
     
@@ -134,7 +122,8 @@ extension ListsTableDataSource: UITableViewDataSource {
         let list = taskLists[indexPath.row]
         cell.configure(title: list.name,
                        taskCount: list.tasks.count,
-                       color: uiColor(for: list.color))
+                       color: uiColor(for: list.color),
+                       iconSystemName: list.icon.rawValue)
         
         
         return cell
@@ -147,6 +136,10 @@ extension ListsTableDataSource: UITableViewDataSource {
         try? realm.write {
             realm.delete(list)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     
 }

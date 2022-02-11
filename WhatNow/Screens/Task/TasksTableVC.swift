@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class TasksVC: UITableViewController {
+class TasksTableVC: UITableViewController {
     
     var list: TaskList!
     var notificationToken: NotificationToken!
@@ -67,7 +67,7 @@ class TasksVC: UITableViewController {
 
 //MARK: Data Source
     
-extension TasksVC {
+extension TasksTableVC {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.tasks.count
@@ -80,7 +80,7 @@ extension TasksVC {
         }
         let task = list.tasks[indexPath.row]
         
-        cell.toggle.setImage(task.status.imageForStatus(), for: .normal)
+        cell.toggle.setBackgroundImage(task.status.imageForStatus(), for: .normal)
         cell.title.text = task.name
         cell.didTapToggle = {} //TODO: ?
         
@@ -93,7 +93,7 @@ extension TasksVC {
         let task = list.tasks[indexPath.row]
         task.tickStatus()
         if let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
-            cell.toggle.setImage(task.status.imageForStatus(), for: .normal)
+            cell.toggle.setBackgroundImage(task.status.imageForStatus(), for: .normal)
         }
     }
     

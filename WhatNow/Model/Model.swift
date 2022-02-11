@@ -81,7 +81,8 @@ class Model {
 class TaskList: Object, ObjectKeyIdentifiable {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var name: String
-    @Persisted var color: Color = .Blue
+    @Persisted var color: Color = .Red
+    @Persisted var icon: Icon = .BulletList
     @Persisted private(set) var tasks: List<Task> //TODO: private doesn't seem to work here.
     
     func add(task: Task) {
@@ -93,6 +94,26 @@ class TaskList: Object, ObjectKeyIdentifiable {
             tasks.append(task)
         }
     }
+    
+    func setColor(_ color: Color) {
+        if let realm = realm {
+            try? realm.write {
+                self.color = color
+            }
+        } else {
+            self.color = color
+        }
+    }
+    
+    func setIcon(_ icon: Icon) {
+        if let realm = realm {
+            try? realm.write {
+                self.icon = icon
+            }
+        } else {
+            self.icon = icon
+        }
+    }
 }
 
 extension TaskList {
@@ -101,24 +122,24 @@ extension TaskList {
         case Orange
         case Yellow
         case Green
-        case Mint
-        case Teal
-        case Cyan
         case Blue
         case Indigo
         case Purple
         case Pink
         case Brown
+        case Mint
         case Gray
+        case Teal
+        case Cyan
     }
 }
 
 extension TaskList {
     enum Icon: String, PersistableEnum, CaseIterable {
         case BulletList = "list.bullet"
-        case Bookmark = "bookmark"
+        case Bookmark = "bookmark.fill"
         case Star = "star.fill"
-        case Book = "book"
+        case Book = "book.fill"
     }
 }
 

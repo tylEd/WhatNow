@@ -10,14 +10,18 @@ import UIKit
 class ColorSelectCell: UITableViewCell {
     
     var selectedColorIndex: Int = 0
-//    var selectedUIColor: UIColor {}
-//    var selectedTaskColor: TaskList.Color {}
+    var didChangeColor: ((TaskList.Color) -> Void)?
 
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var collectionViewHeight: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout{
+            layout.minimumLineSpacing = 1
+            layout.minimumInteritemSpacing = 1
+        }
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -49,6 +53,9 @@ extension ColorSelectCell: UICollectionViewDelegate, UICollectionViewDataSource 
         let prevIndexPath = IndexPath(item: selectedColorIndex, section: 0)
         selectedColorIndex = indexPath.item
         collectionView.reloadItems(at: [prevIndexPath, indexPath])
+        
+        let color = TaskList.Color.allCases[indexPath.item]
+        didChangeColor?(color)
     }
     
 }

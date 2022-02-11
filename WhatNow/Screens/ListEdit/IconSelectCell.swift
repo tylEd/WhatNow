@@ -10,12 +10,18 @@ import UIKit
 class IconSelectCell: UITableViewCell {
     
     var selectedIconIndex: Int = 0
+    var didChangeIcon: ((TaskList.Icon) -> Void)?
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var collectionViewHeight: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout{
+            layout.minimumLineSpacing = 1
+            layout.minimumInteritemSpacing = 1
+        }
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -44,6 +50,9 @@ extension IconSelectCell: UICollectionViewDelegate, UICollectionViewDataSource {
         let prevIndexPath = IndexPath(item: selectedIconIndex, section: 0)
         selectedIconIndex = indexPath.item
         collectionView.reloadItems(at: [prevIndexPath, indexPath])
+        
+        let icon = TaskList.Icon.allCases[indexPath.item]
+        didChangeIcon?(icon)
     }
     
 }

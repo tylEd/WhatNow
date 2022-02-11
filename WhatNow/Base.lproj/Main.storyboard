@@ -3,7 +3,6 @@
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,7 +12,7 @@
         <scene sceneID="dPE-dO-Nmq">
             <objects>
                 <tableViewController id="Ome-dW-T8W" customClass="ListsTableVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="XXl-nm-ial">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="XXl-nm-ial">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
@@ -87,11 +86,11 @@
             </objects>
             <point key="canvasLocation" x="931.88405797101461" y="95.758928571428569"/>
         </scene>
-        <!--TasksVC-->
+        <!--Tasks TableVC-->
         <scene sceneID="anH-j6-WSI">
             <objects>
-                <tableViewController storyboardIdentifier="TasksVC" id="WD3-tR-qwh" customClass="TasksVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="RYT-OY-EdI">
+                <tableViewController storyboardIdentifier="TasksTableVC" id="WD3-tR-qwh" customClass="TasksTableVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="RYT-OY-EdI">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
@@ -103,7 +102,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DG0-eX-33E">
-                                            <rect key="frame" x="55" y="10" width="270" height="30"/>
+                                            <rect key="frame" x="68" y="10" width="257" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="V9t-fB-bj6"/>
                                             </constraints>
@@ -112,27 +111,24 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="giY-or-f6W">
-                                            <rect key="frame" x="5" y="5" width="40" height="40"/>
+                                            <rect key="frame" x="20" y="6" width="40" height="38.666666666666671"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="IjR-CX-eMO"/>
-                                                <constraint firstAttribute="width" secondItem="giY-or-f6W" secondAttribute="height" id="y2X-T2-qOs"/>
+                                                <constraint firstAttribute="width" secondItem="giY-or-f6W" secondAttribute="height" id="naW-1Y-0fj"/>
+                                                <constraint firstAttribute="width" constant="40" id="tXv-PS-2qg"/>
                                             </constraints>
-                                            <state key="normal" title="Button"/>
-                                            <buttonConfiguration key="configuration" style="plain">
-                                                <imageReference key="image" image="circle" catalog="system" symbolScale="large"/>
-                                            </buttonConfiguration>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" backgroundImage="circle" catalog="system"/>
                                             <connections>
                                                 <action selector="didTapToggle:" destination="dkU-62-MAC" eventType="touchUpInside" id="h3J-eh-Ylf"/>
                                             </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="giY-or-f6W" firstAttribute="leading" secondItem="WvR-gw-0OT" secondAttribute="leading" constant="5" id="7kl-AX-2Wh"/>
-                                        <constraint firstItem="DG0-eX-33E" firstAttribute="leading" secondItem="giY-or-f6W" secondAttribute="trailing" constant="10" id="CWH-hv-lz3"/>
+                                        <constraint firstItem="giY-or-f6W" firstAttribute="leading" secondItem="WvR-gw-0OT" secondAttribute="leading" constant="20" symbolic="YES" id="7kl-AX-2Wh"/>
+                                        <constraint firstItem="DG0-eX-33E" firstAttribute="leading" secondItem="giY-or-f6W" secondAttribute="trailing" constant="8" symbolic="YES" id="CWH-hv-lz3"/>
+                                        <constraint firstItem="giY-or-f6W" firstAttribute="centerY" secondItem="WvR-gw-0OT" secondAttribute="centerY" id="LTK-LV-4xe"/>
                                         <constraint firstItem="DG0-eX-33E" firstAttribute="centerY" secondItem="WvR-gw-0OT" secondAttribute="centerY" id="TYh-YX-17l"/>
-                                        <constraint firstAttribute="bottom" secondItem="giY-or-f6W" secondAttribute="bottom" constant="5" id="a4x-Vz-fGi"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="DG0-eX-33E" secondAttribute="trailing" constant="5" id="mM7-5e-bvG"/>
-                                        <constraint firstItem="giY-or-f6W" firstAttribute="top" secondItem="WvR-gw-0OT" secondAttribute="top" constant="5" id="sFt-Ir-ghJ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -174,33 +170,15 @@
             </objects>
             <point key="canvasLocation" x="21.739130434782609" y="95.758928571428569"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="hO7-TZ-q7h">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Q3j-jI-qVC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <navigationController storyboardIdentifier="ListEditVC" automaticallyAdjustsScrollViewInsets="NO" id="esr-YV-JOe" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="AXM-rF-WK3">
-                        <rect key="frame" x="0.0" y="44" width="390" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="DMp-Xk-Nt4" kind="relationship" relationship="rootViewController" id="TpF-N4-sv3"/>
-                    </connections>
-                </navigationController>
-            </objects>
-            <point key="canvasLocation" x="22" y="828"/>
-        </scene>
         <!--List EditVC-->
         <scene sceneID="zbH-Tt-88x">
             <objects>
-                <tableViewController id="DMp-Xk-Nt4" customClass="ListEditVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ListEditVC" id="DMp-Xk-Nt4" customClass="ListEditVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Pmp-MC-cIE">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleCell" id="hlC-48-zPv">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleCell" id="hlC-48-zPv" customClass="TitlePreviewCell" customModule="WhatNow" customModuleProvider="target">
                                 <rect key="frame" x="20" y="49" width="350" height="182.33332824707031"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hlC-48-zPv" id="3GD-ZR-aHQ">
@@ -240,6 +218,11 @@
                                         <constraint firstItem="nMX-JL-JCD" firstAttribute="width" secondItem="zCc-7b-lnO" secondAttribute="width" multiplier="0.6" id="yLw-56-5Zl"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="iconBackgroundImage" destination="zCc-7b-lnO" id="0FR-XA-QJA"/>
+                                    <outlet property="iconImage" destination="nMX-JL-JCD" id="so9-Tz-fJf"/>
+                                    <outlet property="nameField" destination="6e8-61-OL5" id="KRt-VE-oDq"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ColorSelectCell" id="jcu-8D-0qK" customClass="ColorSelectCell" customModule="WhatNow" customModuleProvider="target">
                                 <rect key="frame" x="20" y="231.33332824707031" width="350" height="85.333335876464844"/>

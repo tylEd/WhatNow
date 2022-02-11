@@ -19,8 +19,7 @@ class ListsTableVC: UITableViewController {
         
         setupDataSource()
         
-        // Navbar
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: nil)
+        navigationItem.rightBarButtonItem = editButtonItem
         
         // Toolbar
         //TODO: Setup toolbar items in the storyboard.
@@ -62,13 +61,13 @@ class ListsTableVC: UITableViewController {
     }
     
     @objc func addList() {
-        guard let nav = storyboard?.instantiateViewController(withIdentifier: "ListEditVC") as? UINavigationController,
-              let listForm = nav.viewControllers[0] as? ListEditVC
-        else {
+        guard let listForm = storyboard?.instantiateViewController(withIdentifier: "ListEditVC") as? ListEditVC else {
             fatalError("Failed to instantiate ListFormVC")
         }
         
         listForm.delegate = self
+        
+        let nav = UINavigationController(rootViewController: listForm)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
     }
@@ -84,10 +83,33 @@ class ListsTableVC: UITableViewController {
 extension ListsTableVC {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "TasksVC") as? TasksVC {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if tableView.isEditing {
+            showListEdit(for: indexPath)
+        } else {
+            pushDetail(for: indexPath)
+        }
+    }
+    
+    func pushDetail(for indexPath: IndexPath) {
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "TasksTableVC") as? TasksTableVC {
             vc.list = dataSource.list(at: indexPath.row)
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    
+    func showListEdit(for indexPath: IndexPath) {
+        guard let listForm = storyboard?.instantiateViewController(withIdentifier: "ListEditVC") as? ListEditVC else {
+            fatalError("Failed to instantiate ListFormVC")
+        }
+        
+        listForm.delegate = self
+        listForm.setList(dataSource.list(at: indexPath.row))
+        
+        let nav = UINavigationController(rootViewController: listForm)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
 
 }
@@ -96,7 +118,7 @@ extension ListsTableVC: ListEditVCDelegate {
     
     func didTapDone(list: TaskList) {
         guard list.realm == nil else { return }
-        dataSource.add(list)
+        dataSource.addOrUpdate(list)
     }
     
 }
