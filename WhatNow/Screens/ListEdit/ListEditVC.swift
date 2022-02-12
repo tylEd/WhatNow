@@ -84,9 +84,10 @@ extension ListEditVC {
         }
         
         if let cell = cell as? ColorSelectCell {
-            //cell.frame = tableView.bounds;
-            //cell.collectionView.reloadData()
-            //cell.layoutIfNeeded()
+            //TODO: Might want this to be a CollectionView subclass.
+            cell.frame = tableView.bounds //TODO: Figure out why this fixes it.
+            cell.collectionView.reloadData()
+            cell.layoutIfNeeded()
             //TODO: Probably not necessary here, since the content is static, but other layouts might need to
             //      be able to call this everytime the collection data reloads or the size changes.
             cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
@@ -99,6 +100,9 @@ extension ListEditVC {
         }
         
         if let cell = cell as? IconSelectCell {
+            cell.frame = tableView.bounds //TODO: Figure out why this fixes it.
+            cell.collectionView.reloadData()
+            cell.layoutIfNeeded()
             cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
             
             cell.selectedIconIndex = TaskList.Icon.allCases.firstIndex(of: editList.icon)! //TODO: !

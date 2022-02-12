@@ -39,6 +39,10 @@ class ListsTableVC: UITableViewController {
         navigationController?.setToolbarHidden(false, animated: false)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     func setupDataSource() {
         dataSource = ListsTableDataSource()
         dataSource.didLoad = { [unowned self] in tableView.reloadData() }
@@ -70,7 +74,7 @@ class ListsTableVC: UITableViewController {
     
     func pushDetailView(for list: TaskList) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "TasksTableVC") as? TasksTableVC {
-            vc.list = list
+            vc.lists = [list]
             navigationController?.pushViewController(vc, animated: true)
         }
     }
