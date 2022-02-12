@@ -138,8 +138,4 @@ extension ListsTableDataSource: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
 }

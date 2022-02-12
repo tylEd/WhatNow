@@ -9,12 +9,13 @@ import UIKit
 
 class TaskCell: UITableViewCell {
     
-    var didTapToggle: (() -> Void)?
+    var statusTappedCallback: (() -> Void)?
     
-    @IBOutlet weak var toggle: UIButton!
+    @IBOutlet weak var statusButton: UIButton!
     @IBOutlet weak var title: UILabel!
-
-    @IBAction func didTapToggle(_ sender: UIButton) {
-        didTapToggle?()
+    
+    @IBAction func statusTapped(_ sender: UIButton) {
+        statusTappedCallback?()
     }
+    
 }

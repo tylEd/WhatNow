@@ -90,7 +90,7 @@
         <scene sceneID="anH-j6-WSI">
             <objects>
                 <tableViewController storyboardIdentifier="TasksTableVC" id="WD3-tR-qwh" customClass="TasksTableVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="RYT-OY-EdI">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" allowsSelection="NO" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="RYT-OY-EdI">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
@@ -110,30 +110,30 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="giY-or-f6W">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YsU-Kd-rTk">
                                             <rect key="frame" x="20" y="6" width="40" height="38.666666666666671"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="giY-or-f6W" secondAttribute="height" id="naW-1Y-0fj"/>
-                                                <constraint firstAttribute="width" constant="40" id="tXv-PS-2qg"/>
+                                                <constraint firstAttribute="width" constant="40" id="c5h-vm-AMF"/>
+                                                <constraint firstAttribute="width" secondItem="YsU-Kd-rTk" secondAttribute="height" id="wR7-nt-3kB"/>
                                             </constraints>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                             <state key="normal" backgroundImage="circle" catalog="system"/>
                                             <connections>
-                                                <action selector="didTapToggle:" destination="dkU-62-MAC" eventType="touchUpInside" id="h3J-eh-Ylf"/>
+                                                <action selector="statusTapped:" destination="dkU-62-MAC" eventType="touchUpInside" id="BFO-JF-DtH"/>
                                             </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="giY-or-f6W" firstAttribute="leading" secondItem="WvR-gw-0OT" secondAttribute="leading" constant="20" symbolic="YES" id="7kl-AX-2Wh"/>
-                                        <constraint firstItem="DG0-eX-33E" firstAttribute="leading" secondItem="giY-or-f6W" secondAttribute="trailing" constant="8" symbolic="YES" id="CWH-hv-lz3"/>
-                                        <constraint firstItem="giY-or-f6W" firstAttribute="centerY" secondItem="WvR-gw-0OT" secondAttribute="centerY" id="LTK-LV-4xe"/>
+                                        <constraint firstItem="YsU-Kd-rTk" firstAttribute="leading" secondItem="WvR-gw-0OT" secondAttribute="leading" constant="20" symbolic="YES" id="EMa-fN-p4K"/>
+                                        <constraint firstItem="DG0-eX-33E" firstAttribute="leading" secondItem="YsU-Kd-rTk" secondAttribute="trailing" constant="8" symbolic="YES" id="I2R-fN-VsE"/>
                                         <constraint firstItem="DG0-eX-33E" firstAttribute="centerY" secondItem="WvR-gw-0OT" secondAttribute="centerY" id="TYh-YX-17l"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="DG0-eX-33E" secondAttribute="trailing" constant="5" id="mM7-5e-bvG"/>
+                                        <constraint firstItem="YsU-Kd-rTk" firstAttribute="centerY" secondItem="WvR-gw-0OT" secondAttribute="centerY" id="s92-H9-NzS"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="statusButton" destination="YsU-Kd-rTk" id="EB0-3F-Vp6"/>
                                     <outlet property="title" destination="DG0-eX-33E" id="75Y-7X-tXD"/>
-                                    <outlet property="toggle" destination="giY-or-f6W" id="YkH-0I-aW1"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
