@@ -28,6 +28,11 @@
 		2F96782D2788DAE000246E94 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F96782C2788DAE000246E94 /* Model.swift */; };
 		2F96782F2788E2C000246E94 /* TasksTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F96782E2788E2C000246E94 /* TasksTableVC.swift */; };
 		2F9FDDCF278DFF0F001CF937 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9FDDCE278DFF0F001CF937 /* TaskCell.swift */; };
+		2FB4DE6427BED75100B771F0 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6327BED75100B771F0 /* Task.swift */; };
+		2FB4DE6627BED7D400B771F0 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6527BED7D400B771F0 /* TaskList.swift */; };
+		2FB4DE6827BED81A00B771F0 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6727BED81A00B771F0 /* Schedule.swift */; };
+		2FB4DE6A27BED83F00B771F0 /* SmartList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6927BED83F00B771F0 /* SmartList.swift */; };
+		2FB4DE7B27BFE99700B771F0 /* TasksTableSmartDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7A27BFE99700B771F0 /* TasksTableSmartDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +57,11 @@
 		2F96782C2788DAE000246E94 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		2F96782E2788E2C000246E94 /* TasksTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableVC.swift; sourceTree = "<group>"; };
 		2F9FDDCE278DFF0F001CF937 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		2FB4DE6327BED75100B771F0 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		2FB4DE6527BED7D400B771F0 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
+		2FB4DE6727BED81A00B771F0 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		2FB4DE6927BED83F00B771F0 /* SmartList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartList.swift; sourceTree = "<group>"; };
+		2FB4DE7A27BFE99700B771F0 /* TasksTableSmartDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableSmartDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +93,7 @@
 			children = (
 				2F96782E2788E2C000246E94 /* TasksTableVC.swift */,
 				2F18511D27B6F1A0002B8CE3 /* TasksTableDataSource.swift */,
+				2FB4DE7A27BFE99700B771F0 /* TasksTableSmartDataSource.swift */,
 				2F9FDDCE278DFF0F001CF937 /* TaskCell.swift */,
 			);
 			path = Task;
@@ -92,6 +103,10 @@
 			isa = PBXGroup;
 			children = (
 				2F96782C2788DAE000246E94 /* Model.swift */,
+				2FB4DE6527BED7D400B771F0 /* TaskList.swift */,
+				2FB4DE6327BED75100B771F0 /* Task.swift */,
+				2FB4DE6927BED83F00B771F0 /* SmartList.swift */,
+				2FB4DE6727BED81A00B771F0 /* Schedule.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -233,16 +248,21 @@
 				2F9FDDCF278DFF0F001CF937 /* TaskCell.swift in Sources */,
 				2F5ACA7A27B58531001F58F5 /* IconSelectCell.swift in Sources */,
 				2F5ACA6E27B21F1A001F58F5 /* ListsTableDataSource.swift in Sources */,
+				2FB4DE6A27BED83F00B771F0 /* SmartList.swift in Sources */,
 				2F96782F2788E2C000246E94 /* TasksTableVC.swift in Sources */,
 				2F5ACA7227B42CBE001F58F5 /* ListTitleCell.swift in Sources */,
 				2F5ACA7627B5743E001F58F5 /* ColorCell.swift in Sources */,
+				2FB4DE7B27BFE99700B771F0 /* TasksTableSmartDataSource.swift in Sources */,
 				2F5ACA5F27A08433001F58F5 /* TimeBlockCell.swift in Sources */,
 				2F5ACA7827B58515001F58F5 /* IconCell.swift in Sources */,
 				2F3AC3D9279092A30092361B /* ListEditVC.swift in Sources */,
 				2F96781A2788DAA700246E94 /* ListsTableVC.swift in Sources */,
+				2FB4DE6627BED7D400B771F0 /* TaskList.swift in Sources */,
 				2F5ACA7427B56E6C001F58F5 /* ColorSelectCell.swift in Sources */,
 				2F9678162788DAA700246E94 /* AppDelegate.swift in Sources */,
 				2F18511E27B6F1A0002B8CE3 /* TasksTableDataSource.swift in Sources */,
+				2FB4DE6827BED81A00B771F0 /* Schedule.swift in Sources */,
+				2FB4DE6427BED75100B771F0 /* Task.swift in Sources */,
 				2F9678182788DAA700246E94 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

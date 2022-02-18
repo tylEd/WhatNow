@@ -77,7 +77,7 @@ extension ListEditVC {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: section.cellIdentifier(), for: indexPath)
         if let cell = cell as? TitlePreviewCell {
-            cell.configure(color: uiColor(for: editList.color), imageSystemName: editList.icon.rawValue, name: editList.name)
+            cell.configure(color: editList.color.uiColor, imageSystemName: editList.icon.rawValue, name: editList.name)
             cell.didChangeName = { [unowned self] newName in
                 self.editList.name = newName
             }

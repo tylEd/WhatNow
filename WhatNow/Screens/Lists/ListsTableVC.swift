@@ -10,6 +10,8 @@ import CoreData
 import Combine
 import RealmSwift
 
+//TODO: This should probably use a CollectionView with compositional layout that has a table in section 0 for the smart lists and a table in section 1 for the lists. 
+
 class ListsTableVC: UITableViewController {
     
     var dataSource: ListsTableDataSource!
@@ -72,10 +74,17 @@ class ListsTableVC: UITableViewController {
         print("TODO: Add task sheet")
     }
     
-    func pushDetailView(for list: TaskList) {
+    func pushTasksList(for list: TaskList) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "TasksTableVC") as? TasksTableVC {
-            vc.lists = [list]
             navigationController?.pushViewController(vc, animated: true)
+            vc.configure(with: list)
+        }
+    }
+    
+    func pushSmartList(for smartList: SmartList) {
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "TasksTableVC") as? TasksTableVC {
+            navigationController?.pushViewController(vc, animated: true)
+            vc.configure(with: smartList)
         }
     }
     
@@ -104,10 +113,16 @@ extension ListsTableVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        if indexPath.section == 0 {
+            let smartList = SmartList.all[indexPath.row]
+            pushSmartList(for: smartList)
+            return
+        }
+        
         if tableView.isEditing {
             showListEditView(for: dataSource.list(at: indexPath.row))
         } else {
-            pushDetailView(for: dataSource.list(at: indexPath.row))
+            pushTasksList(for: dataSource.list(at: indexPath.row))
         }
     }
     

@@ -10,22 +10,13 @@ import RealmSwift
 
 class TasksTableVC: UITableViewController {
     
-    var lists: [TaskList] = []
-    var dataSource: TasksTableDataSource?
+    private var lists: [TaskList] = []
+    private var dataSource: UITableViewDataSource?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupDataSource()
-        
-        if lists.count == 1 {
-            let list = lists[0]
-            title = list.name
-            navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor:uiColor(for: list.color)]
-            navigationController?.navigationBar.prefersLargeTitles = true
-        }
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTask))
+//        setupDataSource()
     }
     
     func setupDataSource() {
@@ -62,11 +53,76 @@ class TasksTableVC: UITableViewController {
                 //***********************************************************
                 //TODO: Adding items is broken now. What list to add them to?
                 //***********************************************************
-                self.lists[-1].add(task: Task(value: ["name": name]))
+                self.lists[0].add(task: Task(value: ["name": name]))
             }
         }))
         
         present(ac, animated: true)
+    }
+    
+    @objc func editSchedule() {
+    }
+    
+}
+
+//MARK: Configuration
+
+extension TasksTableVC {
+    //TODO: Should these be subclasses? Not sure how to do that in storyboard.
+    //      If smart lists follow a similar protocol to TaskList then no. Just configure from the protocol type.
+    //      New task will open the sheet when there are multiple lists.
+    //      Might add the TextField cells as well.
+    
+    func configure(with list: TaskList) {
+        self.lists = [list]
+        setupDataSource()
+        
+        guard navigationController != nil else {
+            fatalError("TasksTable should be configured after being added to a navigation controller.")
+        }
+        
+        title = list.name
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: list.color.uiColor]
+    }
+    
+    func configure(with smartList: SmartList) {
+        let dataSource = TasksTableSmartDataSource(smartList: smartList)
+        tableView.dataSource = dataSource
+        tableView.delegate = dataSource
+        self.dataSource = dataSource
+        
+        guard navigationController != nil else {
+            fatalError("TasksTable should be configured after being added to a navigation controller.")
+        }
+        
+        title = smartList.name
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: smartList.color.uiColor]
+        
+        //TODO: This is specific to one SmartList. How can I handle that gracefully?
+        // Toolbar
+        let addTask = createNewTaskBarButtonItem()
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let editSchedule = UIBarButtonItem(title: "Edit Schedule", style: .plain, target: self, action: #selector(editSchedule))
+        toolbarItems = [addTask, spacer, editSchedule]
+        navigationController?.setToolbarHidden(false, animated: false)
+    }
+    
+    private func createNewTaskBarButtonItem() -> UIBarButtonItem {
+        //TODO: Copied
+        //TODO: Should this be a subclass
+        var addTaskConfig = UIButton.Configuration.plain()
+        addTaskConfig.image = UIImage(systemName: "plus.circle.fill")
+        addTaskConfig.imagePadding = 8
+        addTaskConfig.contentInsets = .init(top: 5, leading: 0, bottom: 5, trailing: 5)
+        
+        let addTaskButton = UIButton(configuration: addTaskConfig, primaryAction: nil)
+        addTaskButton.addTarget(self, action: #selector(addTask), for: .touchUpInside)
+        addTaskButton.setTitle("New Task", for: .normal)
+        
+        let addTask = UIBarButtonItem(customView: addTaskButton)
+        return addTask
     }
     
 }

@@ -44,7 +44,7 @@ extension ColorSelectCell: UICollectionViewDelegate, UICollectionViewDataSource 
             fatalError("Failed to dequeue ColorCell")
         }
         
-        cell.configure(color: uiColor(for: listColor), isSelected: indexPath.item == selectedColorIndex)
+        cell.configure(color: listColor.uiColor, isSelected: indexPath.item == selectedColorIndex)
         
         return cell
     }

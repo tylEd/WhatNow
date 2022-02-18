@@ -109,21 +109,39 @@ extension ListsTableDataSource: UITableViewDataSource {
     //TODO: Could I store ID's on the Cell classes themselves
     static let listTitleCellID = "ListTitleCell"
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return SmartList.all.count
+        }
+        
         return taskLists.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Self.listTitleCellID, for: indexPath) as? ListTitleCell
         else {
             fatalError("Couldn't dequeue \(Self.listTitleCellID)")
         }
         
-        let list = taskLists[indexPath.row]
-        cell.configure(title: list.name,
-                       taskCount: list.tasks.count,
-                       color: uiColor(for: list.color),
-                       iconSystemName: list.icon.rawValue)
+        if indexPath.section == 0 {
+            let smartList = SmartList.all[indexPath.row]
+            cell.configure(title: smartList.name,
+                           taskCount: smartList.taskCount,
+                           color: smartList.color.uiColor,
+                           iconSystemName: smartList.icon.rawValue)
+        } else {
+            let list: TaskList
+            list = taskLists[indexPath.row]
+            cell.configure(title: list.name,
+                           taskCount: list.tasks.count,
+                           color: list.color.uiColor,
+                           iconSystemName: list.icon.rawValue)
+        }
         
         
         return cell
@@ -131,6 +149,7 @@ extension ListsTableDataSource: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
+        guard indexPath.section != 0 else { return }
         
         let list = taskLists[indexPath.row]
         try? realm.write {
