@@ -9,6 +9,8 @@ import UIKit
 
 class TaskCell: UITableViewCell {
     
+    static let ID = "TaskCell"
+    
     var statusTappedCallback: (() -> Void)?
     
     @IBOutlet weak var statusButton: UIButton!

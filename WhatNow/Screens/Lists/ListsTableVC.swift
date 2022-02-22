@@ -51,15 +51,15 @@ class ListsTableVC: UITableViewController {
         
         dataSource.didDelete = { [unowned self] deletions in
             guard deletions.count > 0 else { return } //TODO: Not sure why empty array causes crash.
-            tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+            tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1) }),
                                  with: .automatic)
         }
         dataSource.didInsert = { [unowned self] insertions in
-            tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+            tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 1) }),
                                  with: .automatic)
         }
         dataSource.didChange = { [unowned self] modifications in
-            tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+            tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 1) }),
                                  with: .automatic)
         }
         

@@ -32,7 +32,8 @@
 		2FB4DE6627BED7D400B771F0 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6527BED7D400B771F0 /* TaskList.swift */; };
 		2FB4DE6827BED81A00B771F0 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6727BED81A00B771F0 /* Schedule.swift */; };
 		2FB4DE6A27BED83F00B771F0 /* SmartList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6927BED83F00B771F0 /* SmartList.swift */; };
-		2FB4DE7B27BFE99700B771F0 /* TasksTableSmartDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7A27BFE99700B771F0 /* TasksTableSmartDataSource.swift */; };
+		2FB4DE7B27BFE99700B771F0 /* SmartListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */; };
+		2FB4DE7F27C5630400B771F0 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +62,8 @@
 		2FB4DE6527BED7D400B771F0 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		2FB4DE6727BED81A00B771F0 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		2FB4DE6927BED83F00B771F0 /* SmartList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartList.swift; sourceTree = "<group>"; };
-		2FB4DE7A27BFE99700B771F0 /* TasksTableSmartDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableSmartDataSource.swift; sourceTree = "<group>"; };
+		2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListDataSource.swift; sourceTree = "<group>"; };
+		2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				2F96782E2788E2C000246E94 /* TasksTableVC.swift */,
-				2F18511D27B6F1A0002B8CE3 /* TasksTableDataSource.swift */,
-				2FB4DE7A27BFE99700B771F0 /* TasksTableSmartDataSource.swift */,
+				2FB4DE7D27C562E000B771F0 /* DataSources */,
 				2F9FDDCE278DFF0F001CF937 /* TaskCell.swift */,
 			);
 			path = Task;
@@ -117,6 +118,7 @@
 				2F3AC3DA2790B63B0092361B /* Lists */,
 				2F5ACA7B27B58C94001F58F5 /* ListEdit */,
 				2F3AC3DB2790B6660092361B /* Task */,
+				2FB4DE7C27C4A28A00B771F0 /* TaskEdit */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -163,6 +165,23 @@
 				2F9678262788DAA800246E94 /* Info.plist */,
 			);
 			path = WhatNow;
+			sourceTree = "<group>";
+		};
+		2FB4DE7C27C4A28A00B771F0 /* TaskEdit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TaskEdit;
+			sourceTree = "<group>";
+		};
+		2FB4DE7D27C562E000B771F0 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				2F18511D27B6F1A0002B8CE3 /* TasksTableDataSource.swift */,
+				2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */,
+				2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */,
+			);
+			path = DataSources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,11 +271,12 @@
 				2F96782F2788E2C000246E94 /* TasksTableVC.swift in Sources */,
 				2F5ACA7227B42CBE001F58F5 /* ListTitleCell.swift in Sources */,
 				2F5ACA7627B5743E001F58F5 /* ColorCell.swift in Sources */,
-				2FB4DE7B27BFE99700B771F0 /* TasksTableSmartDataSource.swift in Sources */,
+				2FB4DE7B27BFE99700B771F0 /* SmartListDataSource.swift in Sources */,
 				2F5ACA5F27A08433001F58F5 /* TimeBlockCell.swift in Sources */,
 				2F5ACA7827B58515001F58F5 /* IconCell.swift in Sources */,
 				2F3AC3D9279092A30092361B /* ListEditVC.swift in Sources */,
 				2F96781A2788DAA700246E94 /* ListsTableVC.swift in Sources */,
+				2FB4DE7F27C5630400B771F0 /* ListDataSource.swift in Sources */,
 				2FB4DE6627BED7D400B771F0 /* TaskList.swift in Sources */,
 				2F5ACA7427B56E6C001F58F5 /* ColorSelectCell.swift in Sources */,
 				2F9678162788DAA700246E94 /* AppDelegate.swift in Sources */,

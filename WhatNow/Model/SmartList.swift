@@ -8,8 +8,6 @@
 import UIKit
 import RealmSwift
 
-//MARK: Smart Lists
-
 class SmartList {
     
     var realm: Realm
@@ -24,7 +22,6 @@ class SmartList {
         for list in results {
             total += list.tasks.count
         }
-        
         return total
     }
     
@@ -53,7 +50,10 @@ class SmartList {
     static var whatNowTasks: SmartList = {
         let whatNow = SmartList()
         
-        whatNow.results = whatNow.realm.objects(TaskList.self)
+        let list = whatNow.realm.objects(TaskList.self).where { $0.name == "SeRiouS" } [0]
+        let filteredfTasks = list.tasks.where {
+            $0.status != .Scheduled
+        }
         
         whatNow.name = "WhatNow"
         whatNow.color = .Yellow

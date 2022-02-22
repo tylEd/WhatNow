@@ -10,57 +10,115 @@ import RealmSwift
 
 class TasksTableVC: UITableViewController {
     
-    private var lists: [TaskList] = []
-    private var dataSource: UITableViewDataSource?
+    private var dataSource: TasksTableDataSource? {
+        didSet {
+            dataSource?.changeDelegate = self
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        setupDataSource()
-    }
-    
-    func setupDataSource() {
-        let dataSource = TasksTableDataSource(lists: lists)
-        
-        dataSource.didLoad = { [unowned self] in tableView.reloadData() }
-        
-        dataSource.didDelete = { [unowned self] (section, deletions) in
-            guard deletions.count > 0 else { return } //TODO: Not sure why empty array causes crash.
-            tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: section) }),
-                                 with: .automatic)
+        guard dataSource != nil else {
+            fatalError("Call a configure method to setup the data source at initialization time.")
         }
-        dataSource.didInsert = { [unowned self] (section, insertions) in
-            tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: section) }),
-                                 with: .automatic)
-        }
-        dataSource.didChange = { [unowned self] (section, modifications) in
-            tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: section) }),
-                                 with: .automatic)
-        }
-        
-        self.dataSource = dataSource
-        tableView.dataSource = dataSource
-        tableView.delegate = dataSource
     }
     
     @objc func addTask() {
+        //TODO: Add through a sheet form or textfields in the rows
         let ac = UIAlertController(title: "New Task", message: nil, preferredStyle: .alert)
         ac.addTextField()
-        
+
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        ac.addAction(UIAlertAction(title: "Add", style: .default, handler: { /*[weak self]*/ _ in
+        ac.addAction(UIAlertAction(title: "Add", style: .default, handler: { [unowned self] _ in
             if let name = ac.textFields?[0].text {
                 //***********************************************************
                 //TODO: Adding items is broken now. What list to add them to?
                 //***********************************************************
-                self.lists[0].add(task: Task(value: ["name": name]))
+                self.dataSource?.list(at: 0).add(task: Task(value: ["name": name]))
             }
         }))
-        
+
         present(ac, animated: true)
     }
     
     @objc func editSchedule() {
+    }
+    
+}
+
+extension TasksTableVC: TasksTableDataSourceChangeDelegate {
+    func initial() {
+        tableView.reloadData()
+    }
+    
+    func update(section: Int, deletions: [Int], insertions: [Int], modifications: [Int]) {
+        tableView.performBatchUpdates({
+            tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: section) }),
+                                 with: .automatic)
+            tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: section) }),
+                                 with: .automatic)
+            tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: section) }),
+                                 with: .automatic)
+        })
+    }
+    
+}
+
+extension TasksTableVC {
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return dataSource?.listCount ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataSource?.taskCount(for: section) ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let dataSource = dataSource else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskCell.ID, for: indexPath) as? TaskCell
+        else {
+            fatalError("Couldn't dequeue \(TaskCell.ID)")
+        }
+
+        let list = dataSource.list(at: indexPath.section)
+        let task = dataSource.task(at: indexPath)
+        cell.statusButton.setBackgroundImage(task.status.imageForStatus(), for: .normal)
+        cell.statusButton.tintColor = list.color.uiColor
+        cell.title.text = task.name
+        cell.statusTappedCallback = {
+            task.tickStatus()
+            cell.statusButton.setBackgroundImage(task.status.imageForStatus(), for: .normal)
+        }
+
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        dataSource?.remove(at: indexPath)
+    }
+    
+}
+
+//MARK: UITableViewDelegate
+
+extension TasksTableVC {
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let dataSource = self.dataSource else { return nil }
+        guard dataSource.listCount > 1 else { return nil }
+        
+        let label = UILabel()
+        
+        let list = dataSource.list(at: section)
+        label.font = .systemFont(ofSize: 20)
+        label.text = list.name
+        label.textColor = list.color.uiColor
+        
+        return label
     }
     
 }
@@ -74,8 +132,7 @@ extension TasksTableVC {
     //      Might add the TextField cells as well.
     
     func configure(with list: TaskList) {
-        self.lists = [list]
-        setupDataSource()
+        self.dataSource = ListDataSource(lists: [list])
         
         guard navigationController != nil else {
             fatalError("TasksTable should be configured after being added to a navigation controller.")
@@ -84,13 +141,17 @@ extension TasksTableVC {
         title = list.name
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: list.color.uiColor]
+        
+        //TODO: This is specific to one SmartList. How can I handle that gracefully?
+        // Toolbar
+        let addTask = createNewTaskBarButtonItem()
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbarItems = [addTask, spacer]
+        navigationController?.setToolbarHidden(false, animated: false)
     }
     
     func configure(with smartList: SmartList) {
-        let dataSource = TasksTableSmartDataSource(smartList: smartList)
-        tableView.dataSource = dataSource
-        tableView.delegate = dataSource
-        self.dataSource = dataSource
+        self.dataSource = SmartListDataSource(smartList: smartList)
         
         guard navigationController != nil else {
             fatalError("TasksTable should be configured after being added to a navigation controller.")
@@ -125,4 +186,18 @@ extension TasksTableVC {
         return addTask
     }
     
+}
+
+//TODO: Where should this go?
+extension Task.Status {
+    func imageForStatus() -> UIImage? {
+        switch self {
+        case .Scheduled:
+            return UIImage(systemName: "circle.dotted")
+        case .InProgress:
+            return UIImage(systemName: "circle")
+        case .Completed:
+            return UIImage(systemName: "circle.fill")
+        }
+    }
 }

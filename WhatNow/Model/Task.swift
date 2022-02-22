@@ -8,7 +8,8 @@
 import Foundation
 import RealmSwift
 
-class Task: Object {
+class Task: EmbeddedObject {
+    @Persisted(originProperty: "tasks") var list: LinkingObjects<TaskList>
     @Persisted var name: String
     @Persisted var status: Status = .Scheduled
     //@Persisted var subtasks: List<Subtask>

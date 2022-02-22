@@ -367,6 +367,24 @@
             </objects>
             <point key="canvasLocation" x="930.76923076923072" y="827.48815165876772"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="S8e-1R-SOJ">
+            <objects>
+                <tableViewController storyboardIdentifier="TaskEditVC" id="1Nu-kj-zvE" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="QHw-ry-8NR">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="1Nu-kj-zvE" id="MVL-6s-x7I"/>
+                            <outlet property="delegate" destination="1Nu-kj-zvE" id="SvP-vT-Pti"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eHi-6S-Gch" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1878" y="827"/>
+        </scene>
     </scenes>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>

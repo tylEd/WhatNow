@@ -13,7 +13,7 @@ class TaskList: Object, ObjectKeyIdentifiable {
     @Persisted var name: String
     @Persisted var color: Color = .Red
     @Persisted var icon: Icon = .BulletList
-    @Persisted private(set) var tasks: List<Task> //TODO: private doesn't seem to work here.
+    @Persisted var tasks: List<Task> //TODO: private doesn't seem to work here.
     
     func add(task: Task) {
         if let realm = realm {
