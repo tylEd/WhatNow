@@ -25,6 +25,13 @@ class InProgressDataSource: TasksTableDataSource, SmartList {
         setupListNotifications()
     }
     
+    deinit {
+        listsToken.invalidate()
+        for token in taskTokens {
+            token.invalidate()
+        }
+    }
+    
     func setupListNotifications() {
         listsToken = lists.observe { [unowned self] changes in
             switch changes {

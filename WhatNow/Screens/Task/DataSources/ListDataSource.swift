@@ -25,7 +25,7 @@ class ListDataSource: TasksTableDataSource {
     
     private var lists: [TaskList]
     private var notificationTokens: [NotificationToken]
-    var changeDelegate: TasksTableDataSourceChangeDelegate? {
+    weak var changeDelegate: TasksTableDataSourceChangeDelegate? {
         didSet {
             if changeDelegate != nil {
                 setupNotifications()

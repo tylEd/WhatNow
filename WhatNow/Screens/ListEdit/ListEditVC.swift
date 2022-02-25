@@ -36,6 +36,7 @@ class ListEditVC: UITableViewController {
     func setList(_ list: TaskList) {
         editList = TaskList(value: list)
         editList.id = list.id //NOTE: id needed for updates. Not copied by default.
+        tableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -92,7 +93,7 @@ extension ListEditVC {
             //      be able to call this everytime the collection data reloads or the size changes.
             cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
             
-            cell.selectedColorIndex = editList.color.rawValue
+            cell.setSelectedColorIndex(newValue: editList.color.rawValue)
             cell.didChangeColor = { [unowned self] color in
                 self.editList.setColor(color)
                 tableView.reloadSections([ListEditSection.title.rawValue], with: .none)

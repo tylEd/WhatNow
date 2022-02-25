@@ -18,6 +18,12 @@ class AllTasksDataSource: TasksTableDataSource, SmartList {
         setupTaskNotifications()
     }
     
+    deinit {
+        for token in taskTokens {
+            token.invalidate()
+        }
+    }
+    
     func setupTaskNotifications() {
         self.taskTokens = []
         for listIndex in 0 ..< lists.count {

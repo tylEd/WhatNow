@@ -9,7 +9,7 @@ import UIKit
 
 class ColorSelectCell: UITableViewCell {
     
-    var selectedColorIndex: Int = 0
+    private var selectedColorIndex: Int = 0
     var didChangeColor: ((TaskList.Color) -> Void)?
 
     @IBOutlet var collectionView: UICollectionView!
@@ -25,6 +25,15 @@ class ColorSelectCell: UITableViewCell {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+    }
+    
+    func setSelectedColorIndex(newValue: Int) {
+        let prevIndexPath = IndexPath(item: selectedColorIndex, section: 0)
+        let nextIndexPath = IndexPath(item: newValue, section: 0)
+        
+        selectedColorIndex = newValue
+        
+        collectionView.reloadItems(at: [prevIndexPath, nextIndexPath])
     }
     
 }

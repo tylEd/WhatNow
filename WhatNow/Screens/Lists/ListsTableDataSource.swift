@@ -15,9 +15,7 @@ class ListsTableDataSource: NSObject {
     
     private(set) var taskLists: Results<TaskList>
     
-    //TODO: Should I collapse these into something like the observe changes enum?
-    //      Having them indiviually passed like this prevents batch updates on the TableView.
-    //      tableView.performBatchUpdates({})
+    //TODO: Use the change delegate. Make it a generic RealmCollectionChangeDelegate or something like that. 
     var didLoad: (() -> Void)?
     var didDelete: (([Int]) -> Void)?
     var didInsert: (([Int]) -> Void)?
@@ -40,17 +38,12 @@ class ListsTableDataSource: NSObject {
         notificationToken = taskLists.observe { [unowned self] (changes) in
             switch changes {
             case .initial:
-                // Results are now populated and can be accessed without blocking the UI
                 didLoad?()
             case .update(_, let deletions, let insertions, let modifications):
-                // It's important to be sure to always update a table in this order:
-                // deletions, insertions, then updates. Otherwise, you could be unintentionally
-                // updating at the wrong index!
                 didDelete?(deletions)
                 didInsert?(insertions)
                 didChange?(modifications)
             case .error(let error):
-                // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
             }
         }
@@ -64,10 +57,19 @@ extension ListsTableDataSource {
     
     func addOrUpdate(_ list: TaskList) {
         do {
-            try realm.write {
-                //TODO: Should this add use update here or should I use a different method?
-                //TODO: This is crashing due to the EmbededObject List<Task>. How to update TaskList with EmbededObjects?
-                realm.add(list, update: .modified)
+            let listToUpdate = realm.object(ofType: TaskList.self, forPrimaryKey: list.id)
+            if let listToUpdate = listToUpdate {
+                let updatedValues: [String : Any] = ["name": list.name,
+                                     "color": list.color,
+                                     "icon": list.icon]
+                try realm.write {
+                    listToUpdate.setValuesForKeys(updatedValues)
+                }
+            } else {
+                try realm.write {
+                    //NOTE: This doesn't work since TaskList contains EmbededObjects, hence the above update.
+                    realm.add(list, update: .modified)
+                }
             }
         } catch {
             print("ERROR: Failed to add \(list.name) list to Realm")
@@ -76,9 +78,6 @@ extension ListsTableDataSource {
     
     func delete(_ list: TaskList) {
         do {
-            //let list = realm.object(ofType: TaskList.self, forPrimaryKey: id)
-            //guard let list = list else { return }
-            
             try realm.write {
                 realm.delete(list)
             }
