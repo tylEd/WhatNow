@@ -24,17 +24,7 @@ class ListsTableDataSource: NSObject {
     var didChange: (([Int]) -> Void)?
     
     init(config: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
-        do {
-            //TODO: Configuration should be passed in from some gloabal source. (Dependency injection)
-            //TODO: Or should the realm be passed in?
-            var config = config
-            config.schemaVersion = 2
-            config.deleteRealmIfMigrationNeeded = true //TODO: *
-            self.realm = try Realm(configuration: config)
-        } catch {
-            fatalError("Couldn't open realm: \(error.localizedDescription)")
-        }
-        
+        self.realm = Realm.shared
         self.taskLists = realm.objects(TaskList.self)
         
         super.init()
@@ -75,7 +65,8 @@ extension ListsTableDataSource {
     func addOrUpdate(_ list: TaskList) {
         do {
             try realm.write {
-                //TODO: Should this add use update here or should I use a different method? 
+                //TODO: Should this add use update here or should I use a different method?
+                //TODO: This is crashing due to the EmbededObject List<Task>. How to update TaskList with EmbededObjects?
                 realm.add(list, update: .modified)
             }
         } catch {
@@ -115,7 +106,7 @@ extension ListsTableDataSource: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return SmartList.all.count
+            return SmartLists.all.count
         }
         
         return taskLists.count
@@ -129,9 +120,9 @@ extension ListsTableDataSource: UITableViewDataSource {
         }
         
         if indexPath.section == 0 {
-            let smartList = SmartList.all[indexPath.row]
+            let smartList = SmartLists.all[indexPath.row]
             cell.configure(title: smartList.name,
-                           taskCount: smartList.taskCount,
+                           taskCount: smartList.totalTasks,
                            color: smartList.color.uiColor,
                            iconSystemName: smartList.icon.rawValue)
         } else {

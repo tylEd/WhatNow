@@ -71,7 +71,15 @@ class ListsTableVC: UITableViewController {
     }
     
     @objc func addTask() {
-        print("TODO: Add task sheet")
+        guard let taskForm = storyboard?.instantiateViewController(withIdentifier: "TaskEditVC") as? TaskEditVC else {
+            fatalError("Failed to instantiate TaskFormVC")
+        }
+        
+        taskForm.listOptions = Array(dataSource.taskLists)
+        
+        let nav = UINavigationController(rootViewController: taskForm)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
     
     func pushTasksList(for list: TaskList) {
@@ -81,7 +89,7 @@ class ListsTableVC: UITableViewController {
         }
     }
     
-    func pushSmartList(for smartList: SmartList) {
+    func pushSmartList(for smartList: SmartListDataSource) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "TasksTableVC") as? TasksTableVC {
             navigationController?.pushViewController(vc, animated: true)
             vc.configure(with: smartList)
@@ -114,7 +122,7 @@ extension ListsTableVC {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.section == 0 {
-            let smartList = SmartList.all[indexPath.row]
+            let smartList = SmartLists.all[indexPath.row]
             pushSmartList(for: smartList)
             return
         }

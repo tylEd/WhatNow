@@ -27,8 +27,9 @@ class ListDataSource: TasksTableDataSource {
     private var notificationTokens: [NotificationToken]
     var changeDelegate: TasksTableDataSourceChangeDelegate? {
         didSet {
-            guard changeDelegate != nil else { return }
-            setupNotifications()
+            if changeDelegate != nil {
+                setupNotifications()
+            }
         }
     }
     

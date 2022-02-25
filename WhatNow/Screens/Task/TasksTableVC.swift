@@ -26,29 +26,25 @@ class TasksTableVC: UITableViewController {
     }
     
     @objc func addTask() {
-        //TODO: Add through a sheet form or textfields in the rows
-        let ac = UIAlertController(title: "New Task", message: nil, preferredStyle: .alert)
-        ac.addTextField()
-
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        ac.addAction(UIAlertAction(title: "Add", style: .default, handler: { [unowned self] _ in
-            if let name = ac.textFields?[0].text {
-                //***********************************************************
-                //TODO: Adding items is broken now. What list to add them to?
-                //***********************************************************
-                self.dataSource?.list(at: 0).add(task: Task(value: ["name": name]))
-            }
-        }))
-
-        present(ac, animated: true)
-    }
-    
-    @objc func editSchedule() {
+        guard let taskForm = storyboard?.instantiateViewController(withIdentifier: "TaskEditVC") as? TaskEditVC else {
+            fatalError("Failed to instantiate TaskFormVC")
+        }
+        
+        if let dataSource = dataSource {
+            //TODO: Potentially weird behavior when no dataSource / lists. Does that matter? **************************
+            let listOptions = (0 ..< dataSource.listCount).map { dataSource.list(at: $0)}
+            taskForm.listOptions = listOptions
+        }
+        
+        let nav = UINavigationController(rootViewController: taskForm)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
     
 }
 
 extension TasksTableVC: TasksTableDataSourceChangeDelegate {
+    
     func initial() {
         tableView.reloadData()
     }
@@ -65,6 +61,8 @@ extension TasksTableVC: TasksTableDataSourceChangeDelegate {
     }
     
 }
+
+//MARK: UITableViewDataSource
 
 extension TasksTableVC {
     
@@ -126,10 +124,6 @@ extension TasksTableVC {
 //MARK: Configuration
 
 extension TasksTableVC {
-    //TODO: Should these be subclasses? Not sure how to do that in storyboard.
-    //      If smart lists follow a similar protocol to TaskList then no. Just configure from the protocol type.
-    //      New task will open the sheet when there are multiple lists.
-    //      Might add the TextField cells as well.
     
     func configure(with list: TaskList) {
         self.dataSource = ListDataSource(lists: [list])
@@ -150,8 +144,8 @@ extension TasksTableVC {
         navigationController?.setToolbarHidden(false, animated: false)
     }
     
-    func configure(with smartList: SmartList) {
-        self.dataSource = SmartListDataSource(smartList: smartList)
+    func configure(with smartList: SmartListDataSource) {
+        self.dataSource = smartList
         
         guard navigationController != nil else {
             fatalError("TasksTable should be configured after being added to a navigation controller.")
@@ -161,12 +155,18 @@ extension TasksTableVC {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: smartList.color.uiColor]
         
-        //TODO: This is specific to one SmartList. How can I handle that gracefully?
         // Toolbar
         let addTask = createNewTaskBarButtonItem()
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let editSchedule = UIBarButtonItem(title: "Edit Schedule", style: .plain, target: self, action: #selector(editSchedule))
-        toolbarItems = [addTask, spacer, editSchedule]
+        toolbarItems = [addTask, spacer]
+        //********************************************************************************************************************************************************
+        //        if smartList == SmartListDataSource.whatNowTasks {
+        //            // With only two smart lists and one needing special treatment, this seems like the best / simplest solution.
+        //            // With more smart lists and multiple needing special buttons, then I might add toolbar buttons as part of SmartList.
+        //            let editSchedule = UIBarButtonItem(title: "Edit Schedule", style: .plain, target: self, action: #selector(editSchedule))
+        //            toolbarItems?.append(editSchedule)
+        //        }
+        //********************************************************************************************************************************************************
         navigationController?.setToolbarHidden(false, animated: false)
     }
     

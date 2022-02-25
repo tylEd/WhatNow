@@ -367,21 +367,74 @@
             </objects>
             <point key="canvasLocation" x="930.76923076923072" y="827.48815165876772"/>
         </scene>
-        <!--Table View Controller-->
-        <scene sceneID="S8e-1R-SOJ">
+        <!--Task EditVC-->
+        <scene sceneID="tsR-3x-oZA">
             <objects>
-                <tableViewController storyboardIdentifier="TaskEditVC" id="1Nu-kj-zvE" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="QHw-ry-8NR">
+                <tableViewController storyboardIdentifier="TaskEditVC" id="ROz-eT-qxS" customClass="TaskEditVC" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="EGC-uR-02e">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TaskNameCell" id="l19-6S-G3T" customClass="TaskNameCell" customModule="WhatNow" customModuleProvider="target">
+                                <rect key="frame" x="20" y="49" width="350" height="45.333332061767578"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="l19-6S-G3T" id="Yqx-hi-cvU">
+                                    <rect key="frame" x="0.0" y="0.0" width="350" height="45.333332061767578"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Task Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h3z-tX-nHx">
+                                            <rect key="frame" x="20" y="0.0" width="330" height="45.333333333333336"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="45" id="FVa-mZ-TN3"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="h3z-tX-nHx" firstAttribute="top" secondItem="Yqx-hi-cvU" secondAttribute="top" id="Huu-Cn-9Uw"/>
+                                        <constraint firstItem="h3z-tX-nHx" firstAttribute="leading" secondItem="Yqx-hi-cvU" secondAttribute="leading" constant="20" symbolic="YES" id="Qa1-lh-9vu"/>
+                                        <constraint firstAttribute="bottom" secondItem="h3z-tX-nHx" secondAttribute="bottom" id="W6e-vb-oUZ"/>
+                                        <constraint firstAttribute="trailing" secondItem="h3z-tX-nHx" secondAttribute="trailing" id="Yau-7A-ssw"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textField" destination="h3z-tX-nHx" id="5q8-B4-Z3V"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TaskListPickerCell" id="PMA-AO-FsX" customClass="TaskListPickerCell" customModule="WhatNow" customModuleProvider="target">
+                                <rect key="frame" x="20" y="94.333332061767578" width="350" height="162.33332824707031"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PMA-AO-FsX" id="L4N-66-Aac">
+                                    <rect key="frame" x="0.0" y="0.0" width="350" height="162.33332824707031"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U40-4I-oIU">
+                                            <rect key="frame" x="0.0" y="0.0" width="350" height="162.33333333333334"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="162" id="D25-yr-WWn"/>
+                                            </constraints>
+                                        </pickerView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="U40-4I-oIU" secondAttribute="trailing" id="0dA-HQ-vN8"/>
+                                        <constraint firstAttribute="bottom" secondItem="U40-4I-oIU" secondAttribute="bottom" id="ArG-C2-i8s"/>
+                                        <constraint firstItem="U40-4I-oIU" firstAttribute="leading" secondItem="L4N-66-Aac" secondAttribute="leading" id="Mg1-Ve-zyc"/>
+                                        <constraint firstItem="U40-4I-oIU" firstAttribute="top" secondItem="L4N-66-Aac" secondAttribute="top" id="Xf6-a7-ZWs"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="picker" destination="U40-4I-oIU" id="2vb-WH-N05"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="1Nu-kj-zvE" id="MVL-6s-x7I"/>
-                            <outlet property="delegate" destination="1Nu-kj-zvE" id="SvP-vT-Pti"/>
+                            <outlet property="dataSource" destination="ROz-eT-qxS" id="yfF-rQ-L9R"/>
+                            <outlet property="delegate" destination="ROz-eT-qxS" id="Nt1-wp-Lw7"/>
                         </connections>
                     </tableView>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eHi-6S-Gch" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jE5-4N-MM4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1878" y="827"/>
         </scene>

@@ -8,12 +8,13 @@
 import Foundation
 import RealmSwift
 
-protocol TasksTableDataSourceChangeDelegate {
+protocol TasksTableDataSourceChangeDelegate: AnyObject {
     func initial()
     func update(section: Int, deletions: [Int], insertions: [Int], modifications: [Int])
 }
 
 protocol TasksTableDataSource {
+    //NOTE: This whould be a weak reference to prevent holding onto any VC that responds to it.
     var changeDelegate: TasksTableDataSourceChangeDelegate? { get set }
     
     var listCount: Int { get }

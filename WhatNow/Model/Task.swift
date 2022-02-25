@@ -14,6 +14,12 @@ class Task: EmbeddedObject {
     @Persisted var status: Status = .Scheduled
     //@Persisted var subtasks: List<Subtask>
     
+    convenience init(name: String, status: Status = .Scheduled) {
+        self.init()
+        self.name = name
+        self.status = status
+    }
+    
     func tickStatus() {
         if let realm = realm {
             try? realm.write {

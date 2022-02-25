@@ -31,9 +31,14 @@
 		2FB4DE6427BED75100B771F0 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6327BED75100B771F0 /* Task.swift */; };
 		2FB4DE6627BED7D400B771F0 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6527BED7D400B771F0 /* TaskList.swift */; };
 		2FB4DE6827BED81A00B771F0 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6727BED81A00B771F0 /* Schedule.swift */; };
-		2FB4DE6A27BED83F00B771F0 /* SmartList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6927BED83F00B771F0 /* SmartList.swift */; };
 		2FB4DE7B27BFE99700B771F0 /* SmartListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */; };
 		2FB4DE7F27C5630400B771F0 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */; };
+		2FB4DE8227C5835F00B771F0 /* Realm+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE8127C5835F00B771F0 /* Realm+Ext.swift */; };
+		2FB4DE8527C59E0D00B771F0 /* InProgressDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE8427C59E0D00B771F0 /* InProgressDataSource.swift */; };
+		2FB4DE8927C6B2AF00B771F0 /* AllTasksDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE8827C6B2AF00B771F0 /* AllTasksDataSource.swift */; };
+		2FB4DE8D27C7C19B00B771F0 /* TaskEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE8C27C7C19B00B771F0 /* TaskEditVC.swift */; };
+		2FB4DE8F27C7C74C00B771F0 /* TaskNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE8E27C7C74C00B771F0 /* TaskNameCell.swift */; };
+		2FB4DE9127C7C75C00B771F0 /* TaskListPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE9027C7C75C00B771F0 /* TaskListPickerCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,9 +66,14 @@
 		2FB4DE6327BED75100B771F0 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		2FB4DE6527BED7D400B771F0 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		2FB4DE6727BED81A00B771F0 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
-		2FB4DE6927BED83F00B771F0 /* SmartList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartList.swift; sourceTree = "<group>"; };
 		2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListDataSource.swift; sourceTree = "<group>"; };
 		2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
+		2FB4DE8127C5835F00B771F0 /* Realm+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Ext.swift"; sourceTree = "<group>"; };
+		2FB4DE8427C59E0D00B771F0 /* InProgressDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InProgressDataSource.swift; sourceTree = "<group>"; };
+		2FB4DE8827C6B2AF00B771F0 /* AllTasksDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTasksDataSource.swift; sourceTree = "<group>"; };
+		2FB4DE8C27C7C19B00B771F0 /* TaskEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditVC.swift; sourceTree = "<group>"; };
+		2FB4DE8E27C7C74C00B771F0 /* TaskNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNameCell.swift; sourceTree = "<group>"; };
+		2FB4DE9027C7C75C00B771F0 /* TaskListPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPickerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,8 +116,8 @@
 				2F96782C2788DAE000246E94 /* Model.swift */,
 				2FB4DE6527BED7D400B771F0 /* TaskList.swift */,
 				2FB4DE6327BED75100B771F0 /* Task.swift */,
-				2FB4DE6927BED83F00B771F0 /* SmartList.swift */,
 				2FB4DE6727BED81A00B771F0 /* Schedule.swift */,
+				2FB4DE8127C5835F00B771F0 /* Realm+Ext.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -170,6 +180,9 @@
 		2FB4DE7C27C4A28A00B771F0 /* TaskEdit */ = {
 			isa = PBXGroup;
 			children = (
+				2FB4DE8C27C7C19B00B771F0 /* TaskEditVC.swift */,
+				2FB4DE8E27C7C74C00B771F0 /* TaskNameCell.swift */,
+				2FB4DE9027C7C75C00B771F0 /* TaskListPickerCell.swift */,
 			);
 			path = TaskEdit;
 			sourceTree = "<group>";
@@ -179,9 +192,19 @@
 			children = (
 				2F18511D27B6F1A0002B8CE3 /* TasksTableDataSource.swift */,
 				2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */,
-				2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */,
+				2FB4DE8327C59DEC00B771F0 /* SmartLists */,
 			);
 			path = DataSources;
+			sourceTree = "<group>";
+		};
+		2FB4DE8327C59DEC00B771F0 /* SmartLists */ = {
+			isa = PBXGroup;
+			children = (
+				2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */,
+				2FB4DE8827C6B2AF00B771F0 /* AllTasksDataSource.swift */,
+				2FB4DE8427C59E0D00B771F0 /* InProgressDataSource.swift */,
+			);
+			path = SmartLists;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,13 +288,16 @@
 				2F96782D2788DAE000246E94 /* Model.swift in Sources */,
 				2F5ACA7D27B59D10001F58F5 /* TitlePreviewCell.swift in Sources */,
 				2F9FDDCF278DFF0F001CF937 /* TaskCell.swift in Sources */,
+				2FB4DE8F27C7C74C00B771F0 /* TaskNameCell.swift in Sources */,
 				2F5ACA7A27B58531001F58F5 /* IconSelectCell.swift in Sources */,
 				2F5ACA6E27B21F1A001F58F5 /* ListsTableDataSource.swift in Sources */,
-				2FB4DE6A27BED83F00B771F0 /* SmartList.swift in Sources */,
+				2FB4DE8927C6B2AF00B771F0 /* AllTasksDataSource.swift in Sources */,
+				2FB4DE8227C5835F00B771F0 /* Realm+Ext.swift in Sources */,
 				2F96782F2788E2C000246E94 /* TasksTableVC.swift in Sources */,
 				2F5ACA7227B42CBE001F58F5 /* ListTitleCell.swift in Sources */,
 				2F5ACA7627B5743E001F58F5 /* ColorCell.swift in Sources */,
 				2FB4DE7B27BFE99700B771F0 /* SmartListDataSource.swift in Sources */,
+				2FB4DE9127C7C75C00B771F0 /* TaskListPickerCell.swift in Sources */,
 				2F5ACA5F27A08433001F58F5 /* TimeBlockCell.swift in Sources */,
 				2F5ACA7827B58515001F58F5 /* IconCell.swift in Sources */,
 				2F3AC3D9279092A30092361B /* ListEditVC.swift in Sources */,
@@ -281,8 +307,10 @@
 				2F5ACA7427B56E6C001F58F5 /* ColorSelectCell.swift in Sources */,
 				2F9678162788DAA700246E94 /* AppDelegate.swift in Sources */,
 				2F18511E27B6F1A0002B8CE3 /* TasksTableDataSource.swift in Sources */,
+				2FB4DE8527C59E0D00B771F0 /* InProgressDataSource.swift in Sources */,
 				2FB4DE6827BED81A00B771F0 /* Schedule.swift in Sources */,
 				2FB4DE6427BED75100B771F0 /* Task.swift in Sources */,
+				2FB4DE8D27C7C19B00B771F0 /* TaskEditVC.swift in Sources */,
 				2F9678182788DAA700246E94 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
