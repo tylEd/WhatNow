@@ -4,5 +4,5 @@ A task tracker, similar to Reminders, built with storyboards and Realm database.
 
 ## Screenshots
 
-<img src="/Resources/ScreenShots/Lists.png?raw=true" alt="Lists" width="250"> <img src="/Resources/ScreenShots/Tasks.png?raw=true" alt="Tasks" width="250"> <img src="/Resources/ScreenShots/SmartList.png?raw=true" alt="Smart Lists" width="250">
+<img src="/Resources/ScreenShots/Lists.PNG?raw=true" alt="Lists" width="250"> <img src="/Resources/ScreenShots/Tasks.PNG?raw=true" alt="Tasks" width="250"> <img src="/Resources/ScreenShots/SmartList.PNG?raw=true" alt="Smart Lists" width="250">
 
