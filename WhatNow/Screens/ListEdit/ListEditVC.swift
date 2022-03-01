@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol ListEditVCDelegate {
-    func didTapDone(list: TaskList)
-}
-
 class ListEditVC: UITableViewController {
     
     enum ListEditSection: Int, CaseIterable {
@@ -31,7 +27,7 @@ class ListEditVC: UITableViewController {
     }
     
     private var editList = TaskList(value: ["name": ""])
-    var delegate: ListEditVCDelegate?
+    var didCommitChanges: ((TaskList) -> Void)?
     
     func setList(_ list: TaskList) {
         editList = TaskList(value: list)
@@ -52,7 +48,7 @@ class ListEditVC: UITableViewController {
     
     @objc func doneTapped() {
         if editList.name != "" {
-            delegate?.didTapDone(list: editList)
+            didCommitChanges?(editList)
             dismiss(animated: true)
         }
     }
@@ -85,30 +81,27 @@ extension ListEditVC {
         }
         
         if let cell = cell as? ColorSelectCell {
-            //TODO: Might want this to be a CollectionView subclass.
-            cell.frame = tableView.bounds //TODO: Figure out why this fixes it.
+            cell.frame = tableView.bounds
             cell.collectionView.reloadData()
             cell.layoutIfNeeded()
-            //TODO: Probably not necessary here, since the content is static, but other layouts might need to
-            //      be able to call this everytime the collection data reloads or the size changes.
             cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
             
             cell.setSelectedColorIndex(newValue: editList.color.rawValue)
             cell.didChangeColor = { [unowned self] color in
-                self.editList.setColor(color)
+                self.editList.set(color: color)
                 tableView.reloadSections([ListEditSection.title.rawValue], with: .none)
             }
         }
         
         if let cell = cell as? IconSelectCell {
-            cell.frame = tableView.bounds //TODO: Figure out why this fixes it.
+            cell.frame = tableView.bounds
             cell.collectionView.reloadData()
             cell.layoutIfNeeded()
             cell.collectionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height
             
-            cell.selectedIconIndex = TaskList.Icon.allCases.firstIndex(of: editList.icon)! //TODO: !
+            cell.selectedIconIndex = TaskList.Icon.allCases.firstIndex(of: editList.icon)!
             cell.didChangeIcon = { [unowned self] icon in
-                self.editList.setIcon(icon)
+                self.editList.set(icon: icon)
                 tableView.reloadSections([ListEditSection.title.rawValue], with: .none)
             }
         }

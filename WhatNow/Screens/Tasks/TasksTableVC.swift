@@ -23,6 +23,16 @@ class TasksTableVC: UITableViewController {
         guard dataSource != nil else {
             fatalError("Call a configure method to setup the data source at initialization time.")
         }
+        
+        // Toolbar
+        let addTaskButton = NewTaskButton()
+        addTaskButton.addTarget(self, action: #selector(addTask), for: .touchUpInside)
+        
+        let addTask = UIBarButtonItem(customView: addTaskButton)
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbarItems = [addTask, spacer]
+        
+        navigationController?.setToolbarHidden(false, animated: false)
     }
     
     @objc func addTask() {
@@ -31,7 +41,6 @@ class TasksTableVC: UITableViewController {
         }
         
         if let dataSource = dataSource {
-            //TODO: Potentially weird behavior when no dataSource / lists. Does that matter? **************************
             let listOptions = (0 ..< dataSource.listCount).map { dataSource.list(at: $0)}
             taskForm.listOptions = listOptions
         }
@@ -83,12 +92,12 @@ extension TasksTableVC {
 
         let list = dataSource.list(at: indexPath.section)
         let task = dataSource.task(at: indexPath)
-        cell.statusButton.setBackgroundImage(task.status.imageForStatus(), for: .normal)
+        cell.status = task.status
         cell.statusButton.tintColor = list.color.uiColor
         cell.title.text = task.name
         cell.statusTappedCallback = {
             task.tickStatus()
-            cell.statusButton.setBackgroundImage(task.status.imageForStatus(), for: .normal)
+            cell.status = task.status
         }
 
         return cell
@@ -135,13 +144,6 @@ extension TasksTableVC {
         title = list.name
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: list.color.uiColor]
-        
-        //TODO: This is specific to one SmartList. How can I handle that gracefully?
-        // Toolbar
-        let addTask = createNewTaskBarButtonItem()
-        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolbarItems = [addTask, spacer]
-        navigationController?.setToolbarHidden(false, animated: false)
     }
     
     func configure(with smartList: SmartListDataSource) {
@@ -154,50 +156,6 @@ extension TasksTableVC {
         title = smartList.name
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: smartList.color.uiColor]
-        
-        // Toolbar
-        let addTask = createNewTaskBarButtonItem()
-        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolbarItems = [addTask, spacer]
-        //********************************************************************************************************************************************************
-        //        if smartList == SmartListDataSource.whatNowTasks {
-        //            // With only two smart lists and one needing special treatment, this seems like the best / simplest solution.
-        //            // With more smart lists and multiple needing special buttons, then I might add toolbar buttons as part of SmartList.
-        //            let editSchedule = UIBarButtonItem(title: "Edit Schedule", style: .plain, target: self, action: #selector(editSchedule))
-        //            toolbarItems?.append(editSchedule)
-        //        }
-        //********************************************************************************************************************************************************
-        navigationController?.setToolbarHidden(false, animated: false)
     }
     
-    private func createNewTaskBarButtonItem() -> UIBarButtonItem {
-        //TODO: Copied
-        //TODO: Should this be a subclass
-        var addTaskConfig = UIButton.Configuration.plain()
-        addTaskConfig.image = UIImage(systemName: "plus.circle.fill")
-        addTaskConfig.imagePadding = 8
-        addTaskConfig.contentInsets = .init(top: 5, leading: 0, bottom: 5, trailing: 5)
-        
-        let addTaskButton = UIButton(configuration: addTaskConfig, primaryAction: nil)
-        addTaskButton.addTarget(self, action: #selector(addTask), for: .touchUpInside)
-        addTaskButton.setTitle("New Task", for: .normal)
-        
-        let addTask = UIBarButtonItem(customView: addTaskButton)
-        return addTask
-    }
-    
-}
-
-//TODO: Where should this go?
-extension Task.Status {
-    func imageForStatus() -> UIImage? {
-        switch self {
-        case .Scheduled:
-            return UIImage(systemName: "circle.dotted")
-        case .InProgress:
-            return UIImage(systemName: "circle")
-        case .Completed:
-            return UIImage(systemName: "circle.fill")
-        }
-    }
 }

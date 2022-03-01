@@ -38,7 +38,6 @@ class InProgressDataSource: TasksTableDataSource, SmartList {
             case .initial:
                 fallthrough
             case .update(_, _, _, _):
-                //TODO: Respond to the deletions and insertions so the table doesn't have to do a full reload here. ***************************
                 queryTasks()
                 changeDelegate?.initial()
             case .error(let error):
@@ -48,7 +47,6 @@ class InProgressDataSource: TasksTableDataSource, SmartList {
     }
     
     func queryTasks() {
-        //TODO: Is it possible to use a live query for tasks here instead of an array? *******************************************************
         self.taskResults = []
         
         for list in self.lists {

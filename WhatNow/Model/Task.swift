@@ -12,7 +12,6 @@ class Task: EmbeddedObject {
     @Persisted(originProperty: "tasks") var list: LinkingObjects<TaskList>
     @Persisted var name: String
     @Persisted var status: Status = .Scheduled
-    //@Persisted var subtasks: List<Subtask>
     
     convenience init(name: String, status: Status = .Scheduled) {
         self.init()
@@ -41,15 +40,5 @@ extension Task {
             let nextStatus = Status(rawValue: self.rawValue + 1) ?? .Scheduled
             return nextStatus
         }
-    }
-}
-
-class Subtask: Object {
-    @Persisted var name: String
-    @Persisted var isCompleted: Bool = false
-    
-    convenience init(name: String) {
-        self.init()
-        self.name = name
     }
 }

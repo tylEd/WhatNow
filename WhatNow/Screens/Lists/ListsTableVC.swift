@@ -10,8 +10,6 @@ import CoreData
 import Combine
 import RealmSwift
 
-//TODO: This should probably use a CollectionView with compositional layout that has a table in section 0 for the smart lists and a table in section 1 for the lists. 
-
 class ListsTableVC: UITableViewController {
     
     var dataSource: ListsTableDataSource!
@@ -19,51 +17,26 @@ class ListsTableVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupDataSource()
+        self.dataSource = ListsTableDataSource()
+        self.dataSource.changeDelegate = self
+        tableView.dataSource = dataSource
         
         navigationItem.rightBarButtonItem = editButtonItem
         
         // Toolbar
-        //TODO: Setup toolbar items in the storyboard.
-        //TODO: How to do this with a custom view that has image and text on the button?
-        var addTaskConfig = UIButton.Configuration.plain()
-        addTaskConfig.image = UIImage(systemName: "plus.circle.fill")
-        addTaskConfig.imagePadding = 8
-        addTaskConfig.contentInsets = .init(top: 5, leading: 0, bottom: 5, trailing: 5)
-        let addTaskButton = UIButton(configuration: addTaskConfig, primaryAction: nil)
+        let addTaskButton = NewTaskButton()
         addTaskButton.addTarget(self, action: #selector(addTask), for: .touchUpInside)
-        addTaskButton.setTitle("New Task", for: .normal)
-        let addTask = UIBarButtonItem(customView: addTaskButton)
         
+        let addTask = UIBarButtonItem(customView: addTaskButton)
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let addList = UIBarButtonItem(title: "Add List", style: .plain, target: self, action: #selector(addList))
         toolbarItems = [addTask, spacer, addList]
+        
         navigationController?.setToolbarHidden(false, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
-    func setupDataSource() {
-        dataSource = ListsTableDataSource()
-        dataSource.didLoad = { [unowned self] in tableView.reloadData() }
-        
-        dataSource.didDelete = { [unowned self] deletions in
-            guard deletions.count > 0 else { return } //TODO: Not sure why empty array causes crash.
-            tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1) }),
-                                 with: .automatic)
-        }
-        dataSource.didInsert = { [unowned self] insertions in
-            tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 1) }),
-                                 with: .automatic)
-        }
-        dataSource.didChange = { [unowned self] modifications in
-            tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 1) }),
-                                 with: .automatic)
-        }
-        
-        tableView.dataSource = dataSource
     }
     
     @objc func addList() {
@@ -101,7 +74,10 @@ class ListsTableVC: UITableViewController {
             fatalError("Failed to instantiate ListFormVC")
         }
         
-        listForm.delegate = self
+        listForm.didCommitChanges = { [unowned self] list in
+            guard list.realm == nil else { return }
+            self.dataSource.addOrUpdate(list)
+        }
         
         if let list = list {
             listForm.setList(list)
@@ -114,9 +90,38 @@ class ListsTableVC: UITableViewController {
 
 }
 
-//MARK: Delegate
+//MARK: Data Source Change Delegate
+
+extension ListsTableVC: ListsTableDataSourceChangeDelegate {
+    
+    func initial() {
+        tableView.reloadData()
+    }
+    
+    func update(deletions: [Int], insertions: [Int], modifications: [Int]) {
+        tableView.performBatchUpdates({
+            tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1) }),
+                                 with: .automatic)
+            tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 1) }),
+                                 with: .automatic)
+            tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 1) }),
+                                 with: .automatic)
+        })
+    }
+    
+}
+
+//MARK: UITableViewDelegate
 
 extension ListsTableVC {
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if indexPath.section == 0 {
+            return .none
+        }
+        
+        return .delete
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -132,15 +137,6 @@ extension ListsTableVC {
         } else {
             pushTasksList(for: dataSource.list(at: indexPath.row))
         }
-    }
-    
-}
-
-extension ListsTableVC: ListEditVCDelegate {
-    
-    func didTapDone(list: TaskList) {
-        guard list.realm == nil else { return }
-        dataSource.addOrUpdate(list)
     }
     
 }

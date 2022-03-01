@@ -8,18 +8,18 @@
 import UIKit
 import RealmSwift
 
+protocol ListsTableDataSourceChangeDelegate: AnyObject {
+    func initial()
+    func update(deletions: [Int], insertions: [Int], modifications: [Int])
+}
+
 class ListsTableDataSource: NSObject {
     
     private var realm: Realm
     private var notificationToken: NotificationToken!
     
     private(set) var taskLists: Results<TaskList>
-    
-    //TODO: Use the change delegate. Make it a generic RealmCollectionChangeDelegate or something like that. 
-    var didLoad: (() -> Void)?
-    var didDelete: (([Int]) -> Void)?
-    var didInsert: (([Int]) -> Void)?
-    var didChange: (([Int]) -> Void)?
+    weak var changeDelegate: ListsTableDataSourceChangeDelegate?
     
     init(config: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
         self.realm = Realm.shared
@@ -38,11 +38,9 @@ class ListsTableDataSource: NSObject {
         notificationToken = taskLists.observe { [unowned self] (changes) in
             switch changes {
             case .initial:
-                didLoad?()
+                changeDelegate?.initial()
             case .update(_, let deletions, let insertions, let modifications):
-                didDelete?(deletions)
-                didInsert?(insertions)
-                didChange?(modifications)
+                changeDelegate?.update(deletions: deletions, insertions: insertions, modifications: modifications)
             case .error(let error):
                 fatalError("\(error)")
             }
@@ -76,7 +74,9 @@ extension ListsTableDataSource {
         }
     }
     
-    func delete(_ list: TaskList) {
+    func delete(at index: Int) {
+        let list = list(at: index)
+        
         do {
             try realm.write {
                 realm.delete(list)
@@ -92,12 +92,9 @@ extension ListsTableDataSource {
     
 }
 
-//MARK: TableView Data Source
+//MARK: UITableViewDataSource
 
 extension ListsTableDataSource: UITableViewDataSource {
-    
-    //TODO: Could I store ID's on the Cell classes themselves
-    static let listTitleCellID = "ListTitleCell"
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -113,9 +110,9 @@ extension ListsTableDataSource: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Self.listTitleCellID, for: indexPath) as? ListTitleCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListTitleCell.reuseID, for: indexPath) as? ListTitleCell
         else {
-            fatalError("Couldn't dequeue \(Self.listTitleCellID)")
+            fatalError("Couldn't dequeue \(ListTitleCell.reuseID)")
         }
         
         if indexPath.section == 0 {
@@ -141,9 +138,17 @@ extension ListsTableDataSource: UITableViewDataSource {
         guard editingStyle == .delete else { return }
         guard indexPath.section != 0 else { return }
         
-        let list = taskLists[indexPath.row]
-        try? realm.write {
-            realm.delete(list)
+        delete(at: indexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Smart Lists"
+        case 1:
+            return "Lists"
+        default:
+            return nil
         }
     }
     

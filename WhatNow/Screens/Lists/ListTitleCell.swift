@@ -9,6 +9,8 @@ import UIKit
 
 class ListTitleCell: UITableViewCell {
     
+    static let reuseID = "ListTitleCell"
+    
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var taskCountLabel: UILabel!
     @IBOutlet private var iconBGImage: UIImageView!

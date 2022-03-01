@@ -14,7 +14,7 @@ protocol TasksTableDataSourceChangeDelegate: AnyObject {
 }
 
 protocol TasksTableDataSource {
-    //NOTE: This whould be a weak reference to prevent holding onto any VC that responds to it.
+    //NOTE: This should be a weak reference to prevent holding onto any VC that responds to it.
     var changeDelegate: TasksTableDataSourceChangeDelegate? { get set }
     
     var listCount: Int { get }

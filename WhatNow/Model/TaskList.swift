@@ -13,36 +13,39 @@ class TaskList: Object, ObjectKeyIdentifiable {
     @Persisted var name: String
     @Persisted var color: Color = .Red
     @Persisted var icon: Icon = .BulletList
-    @Persisted var tasks: List<Task> //TODO: private doesn't seem to work here.
+    @Persisted var tasks: List<Task>
     
     func add(task: Task) {
-        if let realm = realm {
-            try? realm.write {
-                tasks.append(task)
-            }
-        } else {
+        conditionalWrite {
             tasks.append(task)
         }
     }
     
-    func setColor(_ color: Color) {
-        if let realm = realm {
-            try? realm.write {
-                self.color = color
-            }
-        } else {
+    func set(color: Color) {
+        conditionalWrite {
             self.color = color
         }
     }
     
-    func setIcon(_ icon: Icon) {
-        if let realm = realm {
-            try? realm.write {
-                self.icon = icon
-            }
-        } else {
+    func set(icon: Icon) {
+        conditionalWrite {
             self.icon = icon
         }
+    }
+    
+    private func conditionalWrite(_ action: () -> Void) {
+        if let realm = realm {
+            do {
+                try realm.write {
+                    action()
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        } else {
+            action()
+        }
+        
     }
 }
 

@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2F18511E27B6F1A0002B8CE3 /* TasksTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F18511D27B6F1A0002B8CE3 /* TasksTableDataSource.swift */; };
+		2F1F39CE27CEA02800A32F45 /* AddTaskBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1F39CD27CEA02800A32F45 /* AddTaskBarButton.swift */; };
 		2F3AC3D9279092A30092361B /* ListEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AC3D8279092A30092361B /* ListEditVC.swift */; };
-		2F5ACA5F27A08433001F58F5 /* TimeBlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5ACA5E27A08433001F58F5 /* TimeBlockCell.swift */; };
 		2F5ACA6927AAF449001F58F5 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 2F5ACA6827AAF449001F58F5 /* Realm */; };
 		2F5ACA6B27AAF449001F58F5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2F5ACA6A27AAF449001F58F5 /* RealmSwift */; };
 		2F5ACA6E27B21F1A001F58F5 /* ListsTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5ACA6D27B21F1A001F58F5 /* ListsTableDataSource.swift */; };
@@ -25,12 +25,10 @@
 		2F96781D2788DAA700246E94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F96781B2788DAA700246E94 /* Main.storyboard */; };
 		2F9678222788DAA800246E94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F9678212788DAA800246E94 /* Assets.xcassets */; };
 		2F9678252788DAA800246E94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F9678232788DAA800246E94 /* LaunchScreen.storyboard */; };
-		2F96782D2788DAE000246E94 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F96782C2788DAE000246E94 /* Model.swift */; };
 		2F96782F2788E2C000246E94 /* TasksTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F96782E2788E2C000246E94 /* TasksTableVC.swift */; };
 		2F9FDDCF278DFF0F001CF937 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9FDDCE278DFF0F001CF937 /* TaskCell.swift */; };
 		2FB4DE6427BED75100B771F0 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6327BED75100B771F0 /* Task.swift */; };
 		2FB4DE6627BED7D400B771F0 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6527BED7D400B771F0 /* TaskList.swift */; };
-		2FB4DE6827BED81A00B771F0 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE6727BED81A00B771F0 /* Schedule.swift */; };
 		2FB4DE7B27BFE99700B771F0 /* SmartListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */; };
 		2FB4DE7F27C5630400B771F0 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */; };
 		2FB4DE8227C5835F00B771F0 /* Realm+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB4DE8127C5835F00B771F0 /* Realm+Ext.swift */; };
@@ -43,8 +41,8 @@
 
 /* Begin PBXFileReference section */
 		2F18511D27B6F1A0002B8CE3 /* TasksTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableDataSource.swift; sourceTree = "<group>"; };
+		2F1F39CD27CEA02800A32F45 /* AddTaskBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskBarButton.swift; sourceTree = "<group>"; };
 		2F3AC3D8279092A30092361B /* ListEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEditVC.swift; sourceTree = "<group>"; };
-		2F5ACA5E27A08433001F58F5 /* TimeBlockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBlockCell.swift; sourceTree = "<group>"; };
 		2F5ACA6D27B21F1A001F58F5 /* ListsTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsTableDataSource.swift; sourceTree = "<group>"; };
 		2F5ACA7127B42CBE001F58F5 /* ListTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTitleCell.swift; sourceTree = "<group>"; };
 		2F5ACA7327B56E6C001F58F5 /* ColorSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectCell.swift; sourceTree = "<group>"; };
@@ -60,12 +58,10 @@
 		2F9678212788DAA800246E94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F9678242788DAA800246E94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F9678262788DAA800246E94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2F96782C2788DAE000246E94 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		2F96782E2788E2C000246E94 /* TasksTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableVC.swift; sourceTree = "<group>"; };
 		2F9FDDCE278DFF0F001CF937 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		2FB4DE6327BED75100B771F0 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		2FB4DE6527BED7D400B771F0 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
-		2FB4DE6727BED81A00B771F0 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		2FB4DE7A27BFE99700B771F0 /* SmartListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListDataSource.swift; sourceTree = "<group>"; };
 		2FB4DE7E27C5630400B771F0 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
 		2FB4DE8127C5835F00B771F0 /* Realm+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Ext.swift"; sourceTree = "<group>"; };
@@ -89,34 +85,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F1F39CC27CE9FF800A32F45 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2F1F39CD27CEA02800A32F45 /* AddTaskBarButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		2F3AC3DA2790B63B0092361B /* Lists */ = {
 			isa = PBXGroup;
 			children = (
 				2F9678192788DAA700246E94 /* ListsTableVC.swift */,
 				2F5ACA6D27B21F1A001F58F5 /* ListsTableDataSource.swift */,
 				2F5ACA7127B42CBE001F58F5 /* ListTitleCell.swift */,
-				2F5ACA5E27A08433001F58F5 /* TimeBlockCell.swift */,
 			);
 			path = Lists;
 			sourceTree = "<group>";
 		};
-		2F3AC3DB2790B6660092361B /* Task */ = {
+		2F3AC3DB2790B6660092361B /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
 				2F96782E2788E2C000246E94 /* TasksTableVC.swift */,
 				2FB4DE7D27C562E000B771F0 /* DataSources */,
 				2F9FDDCE278DFF0F001CF937 /* TaskCell.swift */,
 			);
-			path = Task;
+			path = Tasks;
 			sourceTree = "<group>";
 		};
 		2F3AC3DC2790B6820092361B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2F96782C2788DAE000246E94 /* Model.swift */,
 				2FB4DE6527BED7D400B771F0 /* TaskList.swift */,
 				2FB4DE6327BED75100B771F0 /* Task.swift */,
-				2FB4DE6727BED81A00B771F0 /* Schedule.swift */,
 				2FB4DE8127C5835F00B771F0 /* Realm+Ext.swift */,
 			);
 			path = Model;
@@ -127,7 +128,7 @@
 			children = (
 				2F3AC3DA2790B63B0092361B /* Lists */,
 				2F5ACA7B27B58C94001F58F5 /* ListEdit */,
-				2F3AC3DB2790B6660092361B /* Task */,
+				2F3AC3DB2790B6660092361B /* Tasks */,
 				2FB4DE7C27C4A28A00B771F0 /* TaskEdit */,
 			);
 			path = Screens;
@@ -169,6 +170,7 @@
 				2F9678172788DAA700246E94 /* SceneDelegate.swift */,
 				2F3AC3DC2790B6820092361B /* Model */,
 				2F3AC3DD2790B6950092361B /* Screens */,
+				2F1F39CC27CE9FF800A32F45 /* Views */,
 				2F96781B2788DAA700246E94 /* Main.storyboard */,
 				2F9678212788DAA800246E94 /* Assets.xcassets */,
 				2F9678232788DAA800246E94 /* LaunchScreen.storyboard */,
@@ -285,7 +287,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F96782D2788DAE000246E94 /* Model.swift in Sources */,
 				2F5ACA7D27B59D10001F58F5 /* TitlePreviewCell.swift in Sources */,
 				2F9FDDCF278DFF0F001CF937 /* TaskCell.swift in Sources */,
 				2FB4DE8F27C7C74C00B771F0 /* TaskNameCell.swift in Sources */,
@@ -295,10 +296,10 @@
 				2FB4DE8227C5835F00B771F0 /* Realm+Ext.swift in Sources */,
 				2F96782F2788E2C000246E94 /* TasksTableVC.swift in Sources */,
 				2F5ACA7227B42CBE001F58F5 /* ListTitleCell.swift in Sources */,
+				2F1F39CE27CEA02800A32F45 /* AddTaskBarButton.swift in Sources */,
 				2F5ACA7627B5743E001F58F5 /* ColorCell.swift in Sources */,
 				2FB4DE7B27BFE99700B771F0 /* SmartListDataSource.swift in Sources */,
 				2FB4DE9127C7C75C00B771F0 /* TaskListPickerCell.swift in Sources */,
-				2F5ACA5F27A08433001F58F5 /* TimeBlockCell.swift in Sources */,
 				2F5ACA7827B58515001F58F5 /* IconCell.swift in Sources */,
 				2F3AC3D9279092A30092361B /* ListEditVC.swift in Sources */,
 				2F96781A2788DAA700246E94 /* ListsTableVC.swift in Sources */,
@@ -308,7 +309,6 @@
 				2F9678162788DAA700246E94 /* AppDelegate.swift in Sources */,
 				2F18511E27B6F1A0002B8CE3 /* TasksTableDataSource.swift in Sources */,
 				2FB4DE8527C59E0D00B771F0 /* InProgressDataSource.swift in Sources */,
-				2FB4DE6827BED81A00B771F0 /* Schedule.swift in Sources */,
 				2FB4DE6427BED75100B771F0 /* Task.swift in Sources */,
 				2FB4DE8D27C7C19B00B771F0 /* TaskEditVC.swift in Sources */,
 				2F9678182788DAA700246E94 /* SceneDelegate.swift in Sources */,
@@ -477,7 +477,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -505,7 +505,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

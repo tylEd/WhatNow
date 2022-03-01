@@ -41,7 +41,10 @@ class TaskEditVC: UITableViewController {
         guard let selectedList = self.selectedList,
               name != ""
         else {
-            //TODO: Alert
+            let ac = UIAlertController(title: "Incomplete Form", message: "A task must have a name.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Ok", style: .default))
+            present(ac, animated: true)
+            
             return
         }
 
